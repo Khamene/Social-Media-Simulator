@@ -1,4 +1,7 @@
+package ObjectClasses;
+
 import Exceptions.*;
+import Functionality.SQLManager;
 
 import java.time.LocalDate;
 
@@ -12,8 +15,7 @@ public class BusinessUser extends User{
 
     public static void createBusinessAccount(String username, String password) {
         String userID = assignID();
-
-        //---------------------------------
+        SQLManager.createBusinessUser(userID, username, password);
     }
 
     public static void viewAccountStats() throws NoUserLoggedInException, UserNotBusinessException {

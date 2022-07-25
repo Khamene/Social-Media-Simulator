@@ -1,3 +1,5 @@
+package ObjectClasses;
+
 import Exceptions.*;
 import Exceptions.PostNotLikedException;
 

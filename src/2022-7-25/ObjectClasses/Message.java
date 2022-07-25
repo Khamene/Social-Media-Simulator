@@ -1,3 +1,5 @@
+package ObjectClasses;
+
 import Exceptions.MessageContentNullException;
 import Exceptions.MessageDoesNotExistException;
 

@@ -1,3 +1,5 @@
+package ObjectClasses;
+
 import Exceptions.PostAlreadyLikedException;
 import Exceptions.PostDoesNotExistException;
 import Exceptions.PostNotLikedException;

@@ -1,6 +1,7 @@
+package ObjectClasses;
+
 import Exceptions.MessageContentNullException;
 import Exceptions.MessageDoesNotExistException;
-import Exceptions.UserDoesNotExistException;
 import Exceptions.UserWasBannedException;
 
 public class DirectMessage extends Message{

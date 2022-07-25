@@ -1,4 +1,9 @@
+package ObjectClasses;
+
+import Functionality.SQLManager;
+
 import java.time.LocalDate;
+
 
 public class PersonalUser extends User{
     static int idCounter = 0;
@@ -10,8 +15,7 @@ public class PersonalUser extends User{
 
     public static void createNewPersonalAccount(String username , String password) {
         String userID = assignID();
-
-        //---------------------
+        SQLManager.createPersonalUser(userID, username, password);
     }
 
     public static String assignID() {

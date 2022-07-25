@@ -1,10 +1,9 @@
-//import java.sql.Date;
+package ObjectClasses;//import java.sql.Date;
 import Exceptions.*;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.concurrent.CompletionException;
+import Functionality.SQLManager;
 
 public abstract class User {
     private int age;
@@ -28,7 +27,7 @@ public abstract class User {
     private ArrayList<Group> group = new ArrayList<>();
     private ArrayList<Post> tweets = new ArrayList<>();
 
-    static String loggedInUserID = null;
+    static String LoggedInUsername  = null;
 
     public User(String userID ,String firstName, String lastName, String emailAddress, boolean userType,
                      String phoneNumber , String username ,String password, boolean gender,LocalDate date, boolean isPrivate){
@@ -50,35 +49,104 @@ public abstract class User {
     }
 
     public static void login(String username, String password) throws UserDoesNotExistException, PasswordIncorrectException {
-        loggedInUserID = null;
+        int result = SQLManager.login(username, password);
+
+        switch (result) {
+            case 0:
+                System.out.printf("User %s logged in successfully...%n", username);
+                LoggedInUsername = username;
+                break;
+            case -1:
+                throw new UserDoesNotExistException("No user exists with this username...");
+            case -2:
+                throw new PasswordIncorrectException("Incorrect password entered for this account...");
+            default:
+                break;
+        }
     }
 
-    public static void logout() throws NoUserLoggedInException{
-        loggedInUserID = null;
+    public static void logout() throws NoUserLoggedInException {
+        if (LoggedInUsername != null) {
+            LoggedInUsername = null;
+            System.out.println("Logged out successfully...");
+        }
+        else
+            throw new NoUserLoggedInException("No user logged in yet...");
     }
 
-    public static void changeUsername(String username) throws NoUserLoggedInException, NullPointerException{
+    public static void changeUsername(String username) throws NoUserLoggedInException{
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+        else {
+            int result = SQLManager.changeUsername(LoggedInUsername, username);
 
+            if (result == 0) {
+                System.out.printf("Username changed to %s successfully...%n", username);
+                LoggedInUsername = username;
+            }
+        }
     }
 
     public static void changePassword(String oldPassword, String password) throws PasswordIncorrectException,
-            NoUserLoggedInException, NullPointerException {
+            NoUserLoggedInException, UserDoesNotExistException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+        else {
+            int result = SQLManager.changePassword(LoggedInUsername, oldPassword, password);
 
+            switch (result) {
+                case 0:
+                    System.out.println("Password changed successfully...");
+                    break;
+                case -1:
+                    throw new PasswordIncorrectException("Incorrect password entered for this account...");
+                case -2:
+                    throw new UserDoesNotExistException("No user exists with this username...");
+                default:
+                    break;
+            }
+        }
     }
 
-    public static void changeName(String newName) throws NoUserLoggedInException, NullPointerException {
+    public static void changeName(String newName) throws NoUserLoggedInException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+        else {
+            int result = SQLManager.changeName(LoggedInUsername, newName);
 
+            if (result == 0) {
+                System.out.printf("Name changed successfully to %s%n", newName);
+            }
+        }
     }
 
-    public static void changeBirthday(LocalDate birthDate) throws NoUserLoggedInException, NullPointerException{
+    public static void changeBirthday(LocalDate birthDate) throws NoUserLoggedInException {
+        if (LoggedInUsername == null) {
+            throw new NoUserLoggedInException("No user logged in yet...");
+        }
+        else {
+            int result = SQLManager.changeBirthday(LoggedInUsername, birthDate);
 
+            if (result == 0) {
+                System.out.printf("Birthday successfully changed to %s", birthDate.toString());
+            }
+        }
     }
 
     public static void changeGender(boolean gender) throws NoUserLoggedInException {
+        if (LoggedInUsername == null) {
+            throw new NoUserLoggedInException("No user logged in yet...");
+        }
+        else {
+            int result = SQLManager.changeGender(LoggedInUsername, gender);
 
+            if (result == 0) {
+                System.out.printf("Gender successfully changed%n");
+            }
+        }
     }
 
-    public static void changeEmail(String email) throws NoUserLoggedInException, NullPointerException {
+    public static void changeEmail(String email) throws NoUserLoggedInException {
 
     }
 

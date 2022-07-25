@@ -1,3 +1,5 @@
+package ObjectClasses;
+
 import Exceptions.PostAlreadyCommentedException;
 import Exceptions.PostNotCommentedException;
 

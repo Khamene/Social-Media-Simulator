@@ -1,3 +1,5 @@
+package ObjectClasses;
+
 import Exceptions.GroupDoesNotExistException;
 import Exceptions.UserDoesNotExistException;
 import Exceptions.UserNotAdminException;

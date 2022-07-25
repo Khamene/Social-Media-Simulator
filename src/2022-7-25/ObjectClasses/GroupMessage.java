@@ -1,3 +1,5 @@
+package ObjectClasses;
+
 import Exceptions.*;
 
 public class GroupMessage extends Message{

@@ -129,7 +129,7 @@ public abstract class User {
             int result = SQLManager.changeName(LoggedInUsername, newName);
 
             if (result == 0) {
-                System.out.printf("Name changed successfully to %s%n", newName);
+                System.out.printf("Name changed successfully to %s...%n", newName);
             }
         }
     }
@@ -142,7 +142,7 @@ public abstract class User {
             int result = SQLManager.changeBirthday(LoggedInUsername, birthDate);
 
             if (result == 0) {
-                System.out.printf("Birthday successfully changed to %s%n", birthDate.toString());
+                System.out.printf("Birthday successfully changed to %s...%n", birthDate.toString());
             }
         }
     }
@@ -166,7 +166,7 @@ public abstract class User {
             int result = SQLManager.changeEmail(LoggedInUsername, email);
 
             if (result == 0) {
-                System.out.printf("Email successfully changed to %s%n", email);
+                System.out.printf("Email successfully changed to %s...%n", email);
             }
         }
     }
@@ -178,7 +178,7 @@ public abstract class User {
             int result = SQLManager.changePrivacyMode(LoggedInUsername, isPrivate);
 
             if (result == 0) {
-                System.out.printf("Privacy mode successfully changed%n");
+                System.out.printf("Privacy mode successfully changed%n...");
             }
         }
     }
@@ -273,6 +273,7 @@ public abstract class User {
         switch (result) {
             case 0:
                 System.out.println("You may proceed to reset your password");
+                legiblePasswordChange = true;
                 break;
             case -1:
                 throw new WrongSecurityAnswerException("Wrong answers for the security questions");
@@ -281,6 +282,22 @@ public abstract class User {
             default:
                 break;
         }
+    }
+
+    public static void changePasswordAfterForgotPassword(String username, String password) throws WrongSecurityAnswerException, UserDoesNotExistException{
+        if (!legiblePasswordChange)
+            throw new WrongSecurityAnswerException("You can not change passwords for this account");
+        else {
+            int result = SQLManager.changePassword(username, password);
+
+            if (result == 0) {
+                System.out.printf("Password successfully reset for account %s...%n", username);
+            }
+            else if (result == -1)
+                throw new UserDoesNotExistException("No user exists with this username...");
+        }
+
+        legiblePasswordChange = false;
     }
 
     public static void visitPage(String otherUsername) throws UserDoesNotExistException,NoUserLoggedInException {

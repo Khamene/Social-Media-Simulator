@@ -434,6 +434,26 @@ public class SQLManager {
             return -3;
         }
     }
+
+    public static int changePassword(String username, String newPassword) {
+        String query = String.format("SELECT PASSWORD FROM USERS WHERE USERNAME = \"%s\"", username);
+
+        try {
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                query = String.format("UPDATE USERS SET PASSWORD = \"%s\" WHERE USERNAME = \"%s\"", newPassword, username);
+                statement.execute(query);
+                return 0;
+            }
+            else
+                return -1;
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -2;
+        }
+    }
     //-----------------------------------------
 
     public static void finalizeForOnce(){

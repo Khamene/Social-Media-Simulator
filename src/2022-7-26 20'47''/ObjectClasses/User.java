@@ -182,19 +182,6 @@ public abstract class User {
             }
         }
     }
-
-    public static void changeAccountType(boolean accountType) throws  NoUserLoggedInException {
-        if (LoggedInUsername == null)
-            throw new NoUserLoggedInException("No user logged in yet...");
-        else {
-            int result = SQLManager.changeAccountType(LoggedInUsername, accountType);
-
-            if (result == 0) {
-                System.out.printf("Account type successfully changed%n");
-            }
-        }
-    }
-
     public static void deleteUser(String password) throws PasswordIncorrectException, NoUserLoggedInException, UserDoesNotExistException {
         if (LoggedInUsername == null)
             throw new NoUserLoggedInException("No user logged in yet...");

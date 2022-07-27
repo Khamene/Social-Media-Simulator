@@ -453,6 +453,12 @@ public abstract class User {
     public static void showNewMessages() throws NoUserLoggedInException {
 
     }
+    public static void replyDMessage(String formerMessageID,String content){
+
+    }
+    public static void replyGMessage(String formerMessageID,String content){
+
+    }
 
     //getters
 

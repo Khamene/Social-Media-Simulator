@@ -22,9 +22,8 @@ public class InputProcessor {
             else if(inputText.startsWith("-Login")){
                 String[] splitedInput=inputText.split("\\s");
                 if(splitedInput.length==3&&splitedInput[1].length()>=7&&splitedInput[2].length()>=7&&
-                        ifThereIsNumber(splitedInput[0])) {
+                        ifThereIsNumber(splitedInput[1])) {
                     loginIntoApplication(splitedInput);
-                    mainMenu();
                 }
                 else{
                     loginFailed();
@@ -335,6 +334,7 @@ public class InputProcessor {
     public void loginIntoApplication(String[] information){
         try {
             User.login(information[1],information[2]);
+            mainMenu();
 
         } catch (UserDoesNotExistException | PasswordIncorrectException e) {
             e.printStackTrace();
@@ -375,13 +375,14 @@ public class InputProcessor {
         String securityQuestion1=scanner.nextLine();
         System.out.println("Answer to question "+answerNumber[1]);
         String securityQuestion2=scanner.nextLine();
+
         if(userType(accountType)){
-            PersonalUser.createNewPersonalAccount(userName,password,firstname,lastname,emailAddress,phoneNumber,genderDetector(gender),
+            PersonalUser.createNewPersonalAccount(userName,password,firstname,lastname,emailAddress,phoneNumber,!genderDetector(gender),
                     isPrivateAccount(isPrivate),dateInput(birthday),Integer.parseInt(answerNumber[0]),securityQuestion1,
                     Integer.parseInt(answerNumber[1]),securityQuestion2);
         }
         else {
-            BusinessUser.createBusinessAccount(userName,password,firstname,lastname,emailAddress,phoneNumber,genderDetector(gender),
+            BusinessUser.createBusinessAccount(userName,password,firstname,lastname,emailAddress,phoneNumber,!genderDetector(gender),
                     isPrivateAccount(isPrivate),dateInput(birthday),Integer.parseInt(answerNumber[0]),securityQuestion1,
                     Integer.parseInt(answerNumber[1]),securityQuestion2);
         }

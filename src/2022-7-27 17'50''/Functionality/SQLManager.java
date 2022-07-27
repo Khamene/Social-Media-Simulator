@@ -1,9 +1,8 @@
 package Functionality;
 
-import ObjectClasses.Message;
-import ObjectClasses.Post;
-import ObjectClasses.User;
+import ObjectClasses.*;
 
+import javax.swing.plaf.basic.BasicOptionPaneUI;
 import javax.swing.table.TableRowSorter;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.sql.*;
@@ -35,6 +34,84 @@ public class SQLManager {
         catch (SQLException e) {
             System.out.println("Failed to connect with SQL Database...");
             System.exit(-1);
+        }
+
+
+        try {
+            String query = String.format("SELECT ID FROM USERS WHERE USERTYPE = \"P\" ORDER BY ID DESC LIMIT 1");
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int size = resultSet.getString(1).charAt(3) - '0' + 1;
+
+                for (int s = 0; s < size; s++) {
+                    PersonalUser.assignID();
+                }
+            }
+
+            query = String.format("SELECT ID FROM USERS WHERE USERTYPE = \"B\" ORDER BY ID DESC LIMIT 1");
+
+            resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int size = resultSet.getString(1).charAt(3) - '0' + 1;
+
+                for (int s = 0; s < size; s++) {
+                    BusinessUser.assignID();
+                }
+            }
+
+            query = String.format("SELECT MESSAGEID FROM MESSAGES WHERE MESSAGETYPE = \"D\" ORDER BY MESSAGEID DESC LIMIT 1");
+
+            resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int size = resultSet.getString(1).charAt(3) - '0' + 1;
+
+                for (int s = 0; s < size; s++) {
+                    DirectMessage.assignID();
+                }
+            }
+
+            query = String.format("SELECT MESSAGEID FROM MESSAGES WHERE MESSAGETYPE = \"G\" ORDER BY MESSAGEID DESC LIMIT 1");
+
+            resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int size = resultSet.getString(1).charAt(3) - '0' + 1;
+
+                for (int s = 0; s < size; s++) {
+                    GroupMessage.assignID();
+                }
+            }
+
+            query = String.format("SELECT POSTID FROM POSTS ORDER BY POSTID DESC LIMIT 1");
+
+            resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int size = resultSet.getString(1).charAt(3) - '0' + 1;
+
+                for (int s = 0; s < size; s++) {
+                    Post.assignID();
+                }
+            }
+
+            query = String.format("SELECT GROUPID FROM DIRECTGROUPS ORDER BY GROUPID DESC LIMIT 1");
+
+            resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+                int size = resultSet.getString(1).charAt(3) - '0' + 1;
+
+                for (int s = 0; s < size; s++) {
+                    GroupMessage.assignID();
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -84,7 +161,8 @@ public class SQLManager {
             System.out.printf("User %s created successfully...%n", username);
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -93,7 +171,7 @@ public class SQLManager {
                                           boolean isPrivate, LocalDate birthday, int q1, String a1, int q2, String a2, int age) {
         String query = String.format("INSERT INTO USERS (ID, USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL, PHONENUMBER," +
                         " PRIVACYMODE, BIRTHDAY, USERTYPE, DATECREATED, SECURITYQUESTION1," +
-                        " SECURITYANSWER1, SECURITYQUESTION2, SECURITYANSWER2) VALUES" +
+                        " SECURITYANSWER1, SECURITYQUESTION2, SECURITYANSWER2, AGE) VALUES" +
                         " (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"PUB\", \"%s\", \"B\", \"%s\", \"%d\"," +
                         " \"%s\", \"%d\", \"%s\", \"%s\")", userID, username, password, firstName, lastName, email,
                 phoneNumber, birthday.toString(),LocalDateTime.now().toString(), q1, a1, q2, a2, age);
@@ -654,7 +732,7 @@ public class SQLManager {
             if (resultSet.next())
                 return -1;
             else {
-                query = String.format("INSERT INTO MESSAGES VALUES (\"%s\", \"%s\", \"%s\", NULL, \"%s\", 0, 0, 0, NULL, \"D\")"
+                query = String.format("INSERT INTO MESSAGES VALUES (\"%s\", \"%s\", \"%s\", NULL, \"%s\", 0, 0, NULL, \"D\")"
                         , messageID, senderID, receiverID, content);
 
                 statement.execute(query);
@@ -662,7 +740,8 @@ public class SQLManager {
             }
         }
         catch (SQLException e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
+            e.printStackTrace();
             return -2;
         }
     }
@@ -890,7 +969,7 @@ public class SQLManager {
                 if (resultSet.getBoolean(1) == true)
                     return -2;
                 else {
-                    query = String.format("INSERT INTO MESSAGES VALUES (\"%s\", \"%s\", NULL, \"%s\", \"%s\", 0, 0, 0, NULL, \"G\")"
+                    query = String.format("INSERT INTO MESSAGES VALUES (\"%s\", \"%s\", NULL, \"%s\", \"%s\", 0, 0, NULL, \"G\")"
                             , messageID, senderID, groupID, content);
 
                     statement.execute(query);

@@ -111,7 +111,7 @@ public class Post {
         }
     }
 
-    private static String assignID() {
+    public static String assignID() {
         return String.format("#P" + idCounter++);
     }
 }

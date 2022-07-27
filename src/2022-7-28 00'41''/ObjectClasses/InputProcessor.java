@@ -282,6 +282,15 @@ public class InputProcessor {
         }
         return false;
     }
+    public boolean ifThereIsNoNumber(String needToGetCheck){
+        char[] checkCharacters = needToGetCheck.toCharArray();
+        for(char singleChar:checkCharacters){
+            if(!Character.isDigit(singleChar)){
+                return false;
+            }
+        }
+        return true;
+    }
     public void loginFailed(){
         System.out.println("be sure you are not clicking space more than 2 time :).");
         System.out.println("be sure you have no space and have at least one single digit in your username");
@@ -341,10 +350,20 @@ public class InputProcessor {
         }
     }
     public void createAccount(){
-        String userName=pickingUserName();
-        String password=pickingPassword();
-        System.out.print("write your age: ");
-        String age=scanner.nextLine();
+        String userName="";
+        while(userName.length()<7||!ifThereIsNumber(userName)||userName.split("\\s").length>1) {
+            userName = pickingUserName(userName);
+        }
+        String password="";
+        while(password.length()<7||password.split("\\s").length>1) {
+            password = pickingPassword(password);
+        }
+        String age="l";
+        while(!ageCheckPoint(age)) {
+            System.out.print("write your age: ");
+             age = scanner.nextLine();
+            ageCheckPoint(age);
+        }
         System.out.print("firstname: ");
         String firstname=scanner.nextLine();
         System.out.print("lastname: ");
@@ -360,7 +379,11 @@ public class InputProcessor {
         String gender=scanner.nextLine();
         System.out.println("Do you want have a private Account?(yes/no): ");
         String isPrivate=scanner.nextLine();
-        String birthday=pickingBirthdayAndCheckFormat();
+        String birthday="Null";
+        while(pickingBirthdayAndCheckFormat(birthday)){
+            System.out.println("Your Birthday (yyyy/mm/dd): ");
+            birthday=scanner.nextLine();
+        }
         System.out.println("Commercial or Normal?(answer with C for commercial or N for Normal)");
         String accountType=scanner.nextLine();
         System.out.println("choose what question you want answer?(write down number,example:1 2)");
@@ -387,20 +410,17 @@ public class InputProcessor {
                     Integer.parseInt(answerNumber[1]),securityQuestion2);
         }
     }
-    public String  pickingUserName(){
+    public boolean ageCheckPoint(String age){
+        return ifThereIsNoNumber(age);
+    }
+    public String  pickingUserName(String userName){
         System.out.print("choose a username:(at least 7 character no space and at least one digit) ");
-        String userName=scanner.nextLine();
-        if(userName.length()<7||!ifThereIsNumber(userName)||userName.split("\\s").length>1){
-            pickingUserName();
-        }
+        userName=scanner.nextLine();
         return userName;
     }
-    public String  pickingPassword(){
+    public String  pickingPassword(String password){
         System.out.print("choose a password:(at least 7 character no space) ");
-        String password=scanner.nextLine();
-        if(password.length()<7||password.split("\\s").length>1){
-            pickingPassword();
-        }
+        password=scanner.nextLine();
         return password;
     }
     public void changeEmail(String newEmail){
@@ -771,30 +791,28 @@ public class InputProcessor {
             e.printStackTrace();
         }
     }
-    public String  pickingBirthdayAndCheckFormat(){
-        System.out.println("Your Birthday (yyyy/mm/dd): ");
-        String birthday=scanner.nextLine();
+    public boolean  pickingBirthdayAndCheckFormat(String birthday){
         String[] birthdaySplited=birthday.split("/");
         if(birthdaySplited.length==3){
             char[] ch=birthdaySplited[0].toCharArray();
-            char[] ch1=birthdaySplited[0].toCharArray();
-            char[] ch2=birthdaySplited[0].toCharArray();
+            char[] ch1=birthdaySplited[1].toCharArray();
+            char[] ch2=birthdaySplited[2].toCharArray();
             for(char c:ch){
                 if(!Character.isDigit(c)){
-                    return pickingBirthdayAndCheckFormat();
+                    return false;
                 }
             }
             for(char c:ch1){
                 if(!Character.isDigit(c)){
-                    return pickingBirthdayAndCheckFormat();
+                    return false;
                 }
             }
             for(char c:ch2){
                 if(!Character.isDigit(c)){
-                    return pickingBirthdayAndCheckFormat();
+                    return false;
                 }
             }
         }
-        return birthday;
+        return true;
     }
 }

@@ -2,17 +2,13 @@ package Functionality;
 
 import Exceptions.UnauthorisedEditException;
 import ObjectClasses.*;
-
-import javax.print.DocFlavor;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
-import javax.swing.table.TableRowSorter;
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Queue;
-import java.util.ServiceLoader;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 public class SQLManager {
     static String url = "jdbc:mysql://localhost:3306/twitter";
@@ -121,7 +117,6 @@ public class SQLManager {
 
     //Interact directly with User class!!
     //-----------------------------------------
-
     public static void createPersonalUser(String userID, String username, String password, String firstName,
                                           String lastName, String email, String phoneNumber, boolean gender,
                                           boolean isPrivate, LocalDate birthday, int q1, String a1, int q2, String a2, int age) {
@@ -371,22 +366,19 @@ public class SQLManager {
         }
     }
 
-    public static int changeAccountType(String username,boolean accountType) {
-        String query;
+    public static void congratulateBirthday(String username) throws SQLException{
+        String query = String.format("SELECT BIRTHDAY FROM USERS WHERE USERNAME = \"%s\"", username);
 
-        if (accountType)
-            query = String.format("UPDATE USERS SET USERTYPE = \"B\" WHERE USERNAME = \"%s\"", username);
-        else
-            query = String.format("UPDATE USERS SET USERTYPE = \"P\" WHERE USERNAME = \"%s\"", username);
+        LocalDate today = LocalDate.now();
 
-        try {
-            statement.execute(query);
-            return 0;
-        }
-        catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return -1;
-        }
+        ResultSet resultSet = statement.executeQuery(query);
+
+        resultSet.next();
+
+        LocalDate birthday = resultSet.getDate(1).toLocalDate();
+
+        if (today.getMonth().equals(birthday.getMonth()) && today.getDayOfMonth() == birthday.getDayOfMonth())
+            System.out.printf("Happy birthday %s!%n", username);
     }
 
     public static int deleteUser(String username, String password) {
@@ -536,7 +528,10 @@ public class SQLManager {
         }
     }
 
-    public static int sendFollowRequest(String userID, String otherUserID) {
+    public static int sendFollowRequest(String userID, String otherUserID) throws UnauthorisedEditException {
+        if (userID.equalsIgnoreCase(otherUserID))
+            throw new UnauthorisedEditException("You can not follow yourself!");
+
         String query = String.format("SELECT USERNAME FROM USERS WHERE ID = \"%s\"", otherUserID);
 
         try {
@@ -574,9 +569,9 @@ public class SQLManager {
         }
     }
 
-    public static void manageFollowRequests(String username) {
+    public static void manageFollowRequests(String userID) {
         String query = String.format("SELECT FOLLOWREQUESTS.FROMID, USERS.USERNAME FROM FOLLOWREQUESTS INNER JOIN " +
-                "USERS ON FROMID = ID WHERE USERS.USERNAME = \"%s\"", username);
+                "USERS ON FROMID = ID WHERE FOLLOWREQUESTS.TOID = \"%s\"", userID);
 
         try {
             ResultSet resultSet = statement.executeQuery(query);
@@ -702,6 +697,21 @@ public class SQLManager {
         }
     }
 
+    public static void searchMessage(String userID, String content) throws SQLException {
+        String query = String.format("SELECT Messages.MESSAGEID, Messages.USER1, Messages.CONTENT, INBOX.USERID FROM MESSAGES " +
+                "INNER JOIN INBOX USING (MESSAGEID) WHERE INBOX.USERID = \"%s\" AND MESSAGES.CONTENT" +
+                " LIKE \"%%%s%%\"", userID, content);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        System.out.println("Attempting to collect matching messages: ");
+
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString(1) + " from " + resultSet.getString(2) +
+                    " : " + resultSet.getString(3).substring(0,6));
+        }
+    }
+
     public static void showInbox(String userID) throws SQLException {
         String query = String.format("SELECT INBOX.MESSAGEID, MESSAGES.USER1, MESSAGES.CONTENT FROM INBOX INNER JOIN " +
                 "MESSAGES USING (MESSAGEID) WHERE USERID = \"%s\" AND SEEN = 0", userID);
@@ -773,6 +783,463 @@ public class SQLManager {
             System.out.println(resultSet.getString(1) + "\t" + resultSet.getString(2));
         }
     }
+
+    public static void showFeed(String userID) throws SQLException {
+        String query = String.format("SELECT DISTINCTROW POSTS.POSTID, POSTS.USERID, POSTS.CONTENT," +
+                " POSTS.DATEMODIFIED, USERS.USERTYPE, POSTS.LIKENUM, POSTS.COMMENTNUM FROM POSTS" +
+                " INNER JOIN RELATIONS ON RELATIONS.FOLLOWEDID = POSTS.USERID" +
+                " INNER JOIN USERS ON POSTS.USERID = USERS.ID" +
+                " WHERE RELATIONS.FOLLOWERID = \"%s\"" +
+                " ORDER BY POSTS.DATEMODIFIED DESC", userID);
+
+        System.out.println("Showing you user feed: ");
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            if (resultSet.getString(5).equalsIgnoreCase("B")) {
+                System.out.println("-----------------------------------");
+                System.out.println("Ad " + resultSet.getString(1) + " posted by: " + resultSet.getString(2));
+                System.out.println(resultSet.getString(3));
+                System.out.println("Date posted: " + resultSet.getTimestamp(4).toString());
+                System.out.println("Likes count: " + resultSet.getInt(6) + "\tComments count: " + resultSet.getInt(7));
+                System.out.println("-----------------------------------");
+            }
+            else {
+                System.out.println("-----------------------------------");
+                System.out.println(resultSet.getString(1) + " posted by: " + resultSet.getString(2));
+                System.out.println(resultSet.getString(3));
+                System.out.println("Date posted: " + resultSet.getTimestamp(4).toString());
+                System.out.println("Likes count: " + resultSet.getInt(6) + "\tComments count: " + resultSet.getInt(7));
+                System.out.println("-----------------------------------");
+            }
+        }
+    }
+
+    public static int likePost(String userID, String postID) throws SQLException {
+        String query = String.format("SELECT USERID FROM POSTS WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            boolean found = false;
+            if (resultSet.getString(1).equalsIgnoreCase(userID))
+                found = true;
+            else {
+                query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWEDID = \"%s\"", resultSet.getString(1));
+
+                resultSet = statement.executeQuery(query);
+
+                while (resultSet.next()) {
+                    if (resultSet.getString(1).equalsIgnoreCase(userID)) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found) {
+                query = String.format("INSERT INTO LIKES VALUES (\"%s\",\"%s\",\"%s\")", postID, userID, LocalDate.now().toString());
+
+                statement.execute(query);
+
+                return 0;
+            }
+            else
+                return -2;
+        }
+        else
+            return -1;
+    }
+
+    public static int unlikePost(String userID, String postID) throws SQLException {
+        String query = String.format("SELECT USERID FROM POSTS WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWEDID = \"%s\"", resultSet.getString(1));
+
+            resultSet = statement.executeQuery(query);
+
+            boolean found = false;
+            while (resultSet.next()) {
+                if (resultSet.getString(1).equalsIgnoreCase(userID)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                query = String.format("DELETE FROM LIKES WHERE USERID = \"%s\" AND POSTID = \"%s\"", postID, userID);
+
+                statement.execute(query);
+
+                return 0;
+            }
+            else
+                return -2;
+        }
+        else
+            return -1;
+    }
+
+    public static int commentPost(String userID, String postID, String comment) throws SQLException {
+        String query = String.format("SELECT USERID FROM POSTS WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            boolean found = false;
+
+            if (resultSet.getString(1).equalsIgnoreCase(userID)) {
+                found = true;
+            }
+            else {
+                query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWEDID = \"%s\"", resultSet.getString(1));
+
+                resultSet = statement.executeQuery(query);
+
+                while (resultSet.next()) {
+                    if (resultSet.getString(1).equalsIgnoreCase(userID)) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found) {
+                query = String.format("INSERT INTO COMMENTS VALUES (\"%s\",\"%s\",\"%s\", \"%s\")", postID, userID, comment, LocalDate.now().toString());
+
+                statement.execute(query);
+
+                return 0;
+            }
+            else
+                return -2;
+        }
+        else
+            return -1;
+    }
+
+    public static int unCommentPost(String userID, String postID) throws SQLException {
+        String query = String.format("SELECT USERID FROM POSTS WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWEDID = \"%s\"", resultSet.getString(1));
+
+            resultSet = statement.executeQuery(query);
+
+            boolean found = false;
+            while (resultSet.next()) {
+                if (resultSet.getString(1).equalsIgnoreCase(userID)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                query = String.format("DELETE FROM COMMENTS WHERE USERID = \"%s\" AND POSTID = \"%s\"", userID, postID);
+
+                statement.execute(query);
+
+                return 0;
+            }
+            else
+                return -2;
+        }
+        else
+            return -1;
+    }
+
+    public static int checkAccount(String postID) throws SQLException {
+        String query = String.format("SELECT POSTS.USERID, USERS.USERTYPE FROM POSTS INNER JOIN USERS" +
+                " ON POSTS.USERID = USERS.ID WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        resultSet.next();
+        if (resultSet.getString(2).equalsIgnoreCase("B"))
+            return 0;
+        else
+            return -1;
+     }
+
+    public static int checkFollowedAccount(String followerAccount, String followedAccount) throws SQLException {
+        String query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWERID = \"%s\" AND FOLLOWEDID = \"%s\"", followerAccount, followedAccount);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next())
+            return 0;
+        else
+            return -1;
+    }
+
+    public static void showAccountStats(String userID) throws SQLException {
+        System.out.println("Showing stats for account " + userID);
+
+        String query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWEDID = \"%s\"", userID);
+        ResultSet resultSet = statement.executeQuery(query);
+        resultSet.last();
+        int followerCount = resultSet.getRow();
+        query = String.format("SELECT FOLLOWEDID FROM RELATIONS WHERE FOLLOWERID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+        int followingCount = resultSet.getRow();
+
+        System.out.print("Followers Count: " + followerCount + "\tFollowings Count: " + followingCount);
+
+        query = String.format("SELECT POSTID FROM POSTS WHERE USERID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+        int postCount = resultSet.getRow();
+
+        System.out.println("\tPosts Count: " + postCount);
+
+        query = String.format("SELECT LIKES.DATELIKED FROM LIKES INNER JOIN POSTS USING (POSTID) WHERE POSTS.USERID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            System.out.println("Showing like stats: ");
+
+            int likeNum = 1;
+            Date previousLike = resultSet.getDate(1);
+
+            while (resultSet.next()) {
+                if (resultSet.getDate(1).equals(previousLike)) {
+                    likeNum++;
+                }
+                else {
+                    System.out.println("Likes at date " + previousLike.toString() + " : " + likeNum);
+                    likeNum = 1;
+                    previousLike = resultSet.getDate(1);
+                }
+            }
+
+            System.out.println("Likes at date " + previousLike.toString() + " : " + likeNum);
+        }
+
+        query = String.format("SELECT COMMENTS.DATECOMMENTED FROM COMMENTS INNER JOIN POSTS USING (POSTID) WHERE POSTS.USERID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            System.out.println("Showing comment stats: ");
+
+            int commentNum = 1;
+            Date previousComment = resultSet.getDate(1);
+
+            while (resultSet.next()) {
+                if (resultSet.getDate(1).equals(previousComment)) {
+                    commentNum++;
+                }
+                else {
+                    System.out.println("Comments at date " + previousComment.toString() + " : " + commentNum);
+                    commentNum = 1;
+                    previousComment = resultSet.getDate(1);
+                }
+            }
+
+            System.out.println("Comments at date " + previousComment.toString() + " : " + commentNum);
+        }
+
+        query = String.format("SELECT DATEVISITED FROM VISITEDDATES WHERE VISITEDID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            System.out.println("Showing visit stats: ");
+
+            int commentNum = 1;
+            Date previousComment = resultSet.getDate(1);
+
+            while (resultSet.next()) {
+                if (resultSet.getDate(1).equals(previousComment)) {
+                    commentNum++;
+                }
+                else {
+                    System.out.println("Visits at date " + previousComment.toString() + " : " + commentNum);
+                    commentNum = 1;
+                    previousComment = resultSet.getDate(1);
+                }
+            }
+
+            System.out.println("Visits at date " + previousComment.toString() + " : " + commentNum);
+        }
+    }
+
+    public static void visitPage(String userID, String visitorID) throws SQLException {
+        String query = String.format("SELECT USERNAME, USERTYPE, DATECREATED FROM USERS WHERE ID = \"%s\"", userID);
+        ResultSet resultSet = statement.executeQuery(query);
+        resultSet.next();
+
+        System.out.println("Visiting the page with ID: " + userID);
+
+        boolean accountType = (resultSet.getString(2).equalsIgnoreCase("B"));
+
+        if (accountType)
+            System.out.println(resultSet.getString(1) + "\tUser type: Business\tActive since: " + resultSet.getDate(3).toString());
+        else
+            System.out.println(resultSet.getString(1) + "\tUser type: Personal\tActive since: " + resultSet.getDate(3).toString());
+
+        query = String.format("SELECT FOLLOWERID FROM RELATIONS WHERE FOLLOWEDID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+        int followerCount = resultSet.getRow();
+        query = String.format("SELECT FOLLOWEDID FROM RELATIONS WHERE FOLLOWERID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+        int followingCount = resultSet.getRow();
+
+        System.out.print("Followers Count: " + followerCount + "\tFollowings Count: " + followingCount);
+
+        query = String.format("SELECT POSTID, CONTENT, LIKENUM, COMMENTNUM, DATEMODIFIED FROM POSTS WHERE USERID = \"%s\"", userID);
+        resultSet = statement.executeQuery(query);
+        resultSet.last();
+        int postCount = resultSet.getRow();
+
+        System.out.println("\tPosts Count: " + postCount);
+
+        resultSet.beforeFirst();
+
+        while (resultSet.next()) {
+            if (accountType) {
+                System.out.println("-----------------------------------");
+                System.out.println("Ad " + resultSet.getString(1) + ": ");
+                System.out.println(resultSet.getString(2));
+                System.out.println("Date posted: " + resultSet.getTimestamp(5).toString());
+                System.out.println("Likes count: " + resultSet.getInt(3) + "\tComments count: " + resultSet.getInt(4));
+                System.out.println("-----------------------------------");
+            }
+            else {
+                System.out.println("-----------------------------------");
+                System.out.println(resultSet.getString(1) + ": ");
+                System.out.println(resultSet.getString(2));
+                System.out.println("Date posted: " + resultSet.getTimestamp(5).toString());
+                System.out.println("Likes count: " + resultSet.getInt(3) + "\tComments count: " + resultSet.getInt(4));
+                System.out.println("-----------------------------------");
+            }
+        }
+
+        if (visitorID != userID) {
+            query = String.format("INSERT INTO VISITEDDATES VALUES (\"%s\", \"%s\", \"%s\")", userID, visitorID, LocalDate.now().toString());
+            statement.execute(query);
+        }
+    }
+
+    public static void showPostStats(String postID) throws SQLException {
+        String query = String.format("SELECT POSTID, DATEMODIFIED, LIKENUM, COMMENTNUM FROM POSTS WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        resultSet.next();
+
+         System.out.println("Showing stats for Post: ");
+         System.out.println(resultSet.getString(1) + "\t" + resultSet.getDate(2).toString() + "\t:\tLikes: " + resultSet.getString(3) + "\tComments: " + resultSet.getString(4));
+
+         query = String.format("SELECT DATELIKED FROM LIKES WHERE POSTID = \"%s\" ORDER BY DATELIKED DESC", postID);
+
+         resultSet = statement.executeQuery(query);
+
+         if (resultSet.next()) {
+             System.out.println("Showing like stats: ");
+
+             int likeNum = 1;
+             Date previousLike = resultSet.getDate(1);
+
+            while (resultSet.next()) {
+                if (resultSet.getDate(1).equals(previousLike)) {
+                    likeNum++;
+                }
+                else {
+                    System.out.println("Likes at date " + previousLike.toString() + " : " + likeNum);
+                    likeNum = 1;
+                    previousLike = resultSet.getDate(1);
+                }
+            }
+
+            System.out.println("Likes at date " + previousLike.toString() + " : " + likeNum);
+         }
+
+         query = String.format("SELECT DATECOMMENTED FROM COMMENTS WHERE POSTID = \"%s\" ORDER BY DATECOMMENTED DESC", postID);
+
+         resultSet = statement.executeQuery(query);
+
+         if (resultSet.next()) {
+             System.out.println("Showing comment stats: ");
+
+             int commentNum = 1;
+             Date previousLike = resultSet.getDate(1);
+
+             while (resultSet.next()) {
+                 if (resultSet.getDate(1).equals(previousLike)) {
+                     commentNum++;
+                 }
+                 else {
+                     System.out.println("Comments at date " + previousLike.toString() + " : " + commentNum);
+                     commentNum = 1;
+                     previousLike = resultSet.getDate(1);
+                 }
+             }
+
+             System.out.println("Comments at date " + previousLike.toString() + " : " + commentNum);
+         }
+    }
+
+    public static void suggestUsers(String userID) throws SQLException {
+        String query = String.format("SELECT USERS.ID FROM USERS" +
+                " INNER JOIN RELATIONS ON USERS.ID = RELATIONS.FOLLOWEDID" +
+                " WHERE RELATIONS.FOLLOWERID = \"%s\"", userID);
+        ResultSet resultSet = statement.executeQuery(query);
+
+        ArrayList<String> userFriends = new ArrayList<>();
+        while (resultSet.next()) {
+            userFriends.add(resultSet.getString(1));
+        }
+
+        ArrayList<FriendPoint> userNotFriends = new ArrayList<>();
+
+        for (String userFriend : userFriends) {
+            query = String.format("SELECT USERS.ID, USERS.USERNAME FROM USERS" +
+                    " INNER JOIN RELATIONS ON USERS.ID = RELATIONS.FOLLOWEDID" +
+                    " WHERE RELATIONS.FOLLOWERID = \"%s\"", userFriend);
+
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String tempID = resultSet.getString(1);
+                String tempUsername = resultSet.getString(2);
+
+                if (!userFriend.contains(tempID)) {
+                    int index = FriendPoint.getIndex(userNotFriends, tempID);
+                    if (index == -1 ) {
+                        if (!tempID.equalsIgnoreCase(userID))
+                            userNotFriends.add(new FriendPoint(tempID, tempUsername, 1));
+                    }
+                    else {
+                        userNotFriends.get(index).incrementPoint();
+                    }
+                }
+            }
+        }
+
+        Collections.sort(userNotFriends, new Comparator<FriendPoint>() {
+            @Override
+            public int compare(FriendPoint o1, FriendPoint o2) {
+                if (o1.getPoint() > o2.getPoint())
+                    return -1;
+                else if (o1.getPoint() == o2.getPoint())
+                    return 0;
+                else
+                    return 1;
+            }
+        });
+
+        System.out.println("Suggesting users you might want to follow: ");
+        for (FriendPoint userNotFriend : userNotFriends) {
+            System.out.println(userNotFriend.getID() + "\t" + userNotFriend.getUsername() + "\tCommon friends: " + userNotFriend.getPoint());
+        }
+    }
     //-----------------------------------------
 
     //Interact directly with DirectMessage class!!
@@ -820,10 +1287,7 @@ public class SQLManager {
             return -3;
         }
     }
-
     //-----------------------------------------
-
-
 
     //Interact directly with Group class!!
     // -----------------------------------------
@@ -972,7 +1436,7 @@ public class SQLManager {
         ResultSet resultSet = statement.executeQuery(query);
 
         if (resultSet.next()) {
-            query = String.format("UPDATE GROUPSPARTICIPANTS SET BANNED = 0 WHERE USERID = \"%s\", GROUPID = \"%s\"", userID, groupID);
+            query = String.format("UPDATE GROUPSPARTICIPANTS SET BANNED = 0 WHERE USERID = \"%s\" AND GROUPID = \"%s\"", userID, groupID);
 
             statement.execute(query);
 
@@ -1038,15 +1502,26 @@ public class SQLManager {
 
     //Interact directly with Post class!!
     // -----------------------------------------
+    public static int checkPostID(String postID) throws SQLException {
+        String query = String.format("SELECT POSTID FROM POSTS WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next())
+            return 0;
+        else
+            return -1;
+    }
+
     public static void publishPost(String userID, String postID, String content) throws SQLException{
-        String query = String.format("INSERT INTO POSTS VALUES (\"%s\", \"%s\", 0, 0, \"%s\", NULL, \"%s\""
+        String query = String.format("INSERT INTO POSTS VALUES (\"%s\", \"%s\", 0, 0, \"%s\", NULL, \"%s\")"
                 , postID, userID, content, LocalDateTime.now().toString());
 
         statement.execute(query);
     }
 
     public static int checkMyPost(String userID, String postID) throws SQLException {
-        String query = String.format("SELECT CONTENT FROM POSTS WHERE USERID = \"%s\" AND POSTIF = \"%s\"");
+        String query = String.format("SELECT CONTENT FROM POSTS WHERE USERID = \"%s\" AND POSTID = \"%s\"", userID, postID);
 
         ResultSet resultSet = statement.executeQuery(query);
 
@@ -1057,13 +1532,38 @@ public class SQLManager {
             return -1;
     }
 
+    public static int checkFollowingPost(String userID, String postID) throws SQLException {
+        String query = String.format("SELECT POSTS.POSTID FROM POSTS" +
+                " INNER JOIN RELATIONS ON RELATIONS.FOLLOWEDID = POSTS.USERID" +
+                " WHERE RELATIONS.FOLLOWERID = \"%s\" AND POSTS.POSTID = \"%s\"", userID, postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next())
+            return 0;
+        else
+            return -1;
+    }
+
     public static void deletePost(String postID) throws SQLException {
         String query = String.format("DELETE FROM POSTS WHERE POSTID = \"%s\"", postID);
 
         statement.execute(query);
     }
-    // -----------------------------------------
 
+    public static void showComments(String postID) throws SQLException {
+        String query = String.format("SELECT COMMENTS.USERID, USERS.USERNAME, COMMENTS.COMMENT FROM COMMENTS" +
+                " INNER JOIN USERS ON COMMENTS.USERID = USERS.ID WHERE POSTID = \"%s\"", postID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        System.out.println("Showing comments for posts: ");
+
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString(1) + "\t" + resultSet.getString(2) + " : " + resultSet.getString(3));
+        }
+    }
+    // -----------------------------------------
 
     //Interact directly with Message class!!
     // -----------------------------------------
@@ -1201,6 +1701,18 @@ public class SQLManager {
 
         statement.execute(query);
     }
+
+    public static void showMessage(String userID, String messageID) throws SQLException {
+        String query = String.format("SELECT MESSAGES.CONTENT FROM MESSAGES INNER JOIN INBOX USING (MESSAGEID) WHERE" +
+                " INBOX.USERID = \"%s\" AND INBOX.MESSAGEID = \"%s\"", userID, messageID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            System.out.println("Complete content is: ");
+            System.out.println(resultSet.getString(1));
+        }
+    }
     // -----------------------------------------
 
     //Interact directly with GroupMessage class!!
@@ -1257,6 +1769,36 @@ public class SQLManager {
         }
     }
     // -----------------------------------------
+
+
+    //------------------------------------------
+    //Interact directly with Like class!!
+    public static int determineLike(String userID, String postID) throws SQLException {
+        String query = String.format("SELECT * FROM LIKES WHERE POSTID = \"%s\" AND USERID = \"%s\"", postID, userID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next())
+            return 0;
+        else
+            return -1;
+    }
+    //------------------------------------------
+
+
+    //Interact directly with Comment class!!
+    //------------------------------------------
+    public static int determineComment(String userID, String postID) throws SQLException {
+        String query = String.format("SELECT * FROM COMMENTS WHERE POSTID = \"%s\" AND USERID = \"%s\"", postID, userID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next())
+            return 0;
+        else
+            return -1;
+    }
+    //------------------------------------------
 
     public static void finalizeForOnce(){
         try {

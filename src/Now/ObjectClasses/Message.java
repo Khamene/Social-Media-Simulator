@@ -55,14 +55,14 @@ public abstract class Message {
     }
 
 
-//    public static void showMessage(String messageID) throws MessageDoesNotExistException{
-//        //ADD SQL CODE HERE LATER ON
-//        //--------------------------
-//
-//        //--------------------------
-//
-//        //POSSIBLE REL WITH JAVAFX
-//    }
+    public static void showMessage(String messageID, String userID){
+        try {
+            SQLManager.showMessage(userID, messageID);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void editMessage(String messageID, String senderID, String content) throws UnauthorisedEditException, MessageContentNullException {
         if (content.equals(""))

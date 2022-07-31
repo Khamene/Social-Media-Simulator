@@ -5,7 +5,7 @@ import Functionality.SQLManager;
 
 import java.util.ArrayList;
 
-public class GroupMessage extends Message{
+public abstract class GroupMessage extends Message{
     static int idCounter = 0;
 
     //Recommended : deleteGroupMessageByTheOrderOfAdmin

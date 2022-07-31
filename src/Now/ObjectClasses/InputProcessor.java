@@ -5,6 +5,7 @@ import Exceptions.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class InputProcessor {
     Scanner scanner;
@@ -38,228 +39,270 @@ public class InputProcessor {
                 createAccount();
                 welcomeMenu();
             }
-            else if(inputText.equalsIgnoreCase("-ChaneEmail")&&checkIfLoggedIn()){
-                System.out.print("New Email: ");
-                String newEmail=scanner.nextLine();
-                changeEmail(newEmail);
-            }
-            else if(inputText.equalsIgnoreCase("-ChangePrivacyMode")&&checkIfLoggedIn()){
-                System.out.println("do you want your account be private? : ");
-                String answer=scanner.nextLine();
-                changePrivacy(answer);
-            }
-            else if(inputText.startsWith("-ChangeBirthday")&&checkIfLoggedIn()){
-                System.out.println("ned birthday(yyyy/mm/dd): ");
-                String birthday=scanner.nextLine();
-                changeBirthday(birthday);
-            }
-            else if(inputText.startsWith("-ChangeUserName")&&checkIfLoggedIn()){
-                String newUserName="a a";
-                while(newUserName.split("\\s").length==1) {
-                    System.out.print("new UserName(Can't use space): ");
-                    newUserName = scanner.nextLine();
-                }
-                changeUserName(newUserName);
-            }
-            else if(inputText.equalsIgnoreCase("-ChangeGender")&&checkIfLoggedIn()){
-                System.out.println("tell us your gender with 1 for male and 2 for female");
-                String gender=scanner.nextLine();
-                changeGender(gender);
-            }
-            else if(inputText.startsWith("-Follow")&&checkIfLoggedIn()){
-                follow(inputText.split("\\s"));
-            }
-            else if(inputText.equalsIgnoreCase("-CreatePost")&&checkIfLoggedIn()){
-                System.out.println("type your Text here: ");
-                String postText=scanner.nextLine();
-                postProgress(postText);
-            }
-            else if(inputText.equalsIgnoreCase("-DeletePost")&&checkIfLoggedIn()) {
-                System.out.print("Which post do you want to delete: ");
-                String postID = scanner.nextLine();
+            else {
                 try {
-                    User.untweet(postID);
-                }
-                catch (NoUserLoggedInException | UnauthorisedEditException | UserDoesNotExistException | PostDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(inputText.equalsIgnoreCase("-ShowComments")&&checkIfLoggedIn()){
-                System.out.println("please say PostID to show Comments");
-                String postID=scanner.nextLine();
-                showComments(postID);
-            }
-            else if(inputText.equalsIgnoreCase("-ShowLikes")&&checkIfLoggedIn()){
-                System.out.println("please say PostID to show Likes");
-                String postID=scanner.nextLine();
-                showLikes(postID);
-            }
-            else if(inputText.equalsIgnoreCase("-ShowStats")&&checkIfLoggedIn()){
-                showStats();
-            }
-            else if(inputText.equalsIgnoreCase("-EditMessage")&&checkIfLoggedIn()){
-                System.out.println("write down messageID to edit: ");
-                String messageID=scanner.nextLine();
-                editMessage(messageID);
-            }
-            else if(inputText.equalsIgnoreCase("-showDirectMessage")&&checkIfLoggedIn()){
-                System.out.println("who do you want to see your message(receiverUserName) : ");
-                String secondUserID=scanner.nextLine();
-                showDirectMessages(secondUserID);
-            }
-            else if(inputText.equalsIgnoreCase("-DeleteMessage")&&checkIfLoggedIn()){
-                String messageID=scanner.nextLine();
-                deleteMessage(messageID);
-            }
-            else if(inputText.startsWith("-Comment")&&checkIfLoggedIn()){
-                commentingOnPost(inputText.split("\\s",3));
-            }
-            else if(inputText.startsWith("-ShowPage")&&checkIfLoggedIn()){
-                String userName=inputText.split("\\s",2)[1];
-                try {
-                    showPage(User.getUserID(userName));
-                } catch (UserDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(inputText.equalsIgnoreCase("DeleteAccount")&&checkIfLoggedIn()){
-                System.out.println("you need to tell us the password for being sure about it");
-                System.out.print("password: ");
-                String password=scanner.nextLine();
-                deleteUser(password);
-            }
-            else if(inputText.startsWith("-Like")&&checkIfLoggedIn()){
-                String postID=inputText.split("\\s",2)[1];
-                likeTweet(postID);
-            }
-            else if(inputText.startsWith("-Unlike")&&checkIfLoggedIn()){
-                String postID=inputText.split("\\s",2)[1];
-                unLikeTweet(postID);
-            }
-            else if(inputText.equalsIgnoreCase("-showRequests")&&checkIfLoggedIn()){
-                showRequests();
-            }
-            else if(inputText.startsWith("-AcceptRequest")&&checkIfLoggedIn()){
-                acceptFollowReq(inputText.split("\\s",2)[1]);
-            }
-            else if(inputText.equalsIgnoreCase("-AccountStat")&&checkIfLoggedIn()){
-                accountStats();
-            }
-            else if(inputText.equalsIgnoreCase("-SendDirectMessage")&&checkIfLoggedIn()){
-                System.out.print("userName of receiver: ");
-                String receiver=scanner.nextLine();
-                System.out.print("now type your text: ");
-                String messageText=scanner.nextLine();
-                sendDM(messageText,receiver);
-                messageHelp();
-            }
-            else if(inputText.equalsIgnoreCase("-GroupMessage")&&checkIfLoggedIn()){
-                System.out.print("GroupName receiving your message: ");
-                String receivingGroup=scanner.nextLine();
-                System.out.print("now type your text: ");
-                String messageText=scanner.nextLine();
-                sendGroupMessage(messageText,receivingGroup);
-            }
-            else if(inputText.equalsIgnoreCase("-ShowNewMessages")&&checkIfLoggedIn()){
-                try {
-                    User.showNewMessages();
-                } catch (NoUserLoggedInException | UserDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(inputText.equalsIgnoreCase("-ShowGroups")&&checkIfLoggedIn()){
-                try {
-                    User.showMyGroups();
-                    groupHelp();
-                } catch (NoUserLoggedInException | UserDoesNotExistException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (inputText.equalsIgnoreCase("-ShowGroupInfo") && checkIfLoggedIn() ) {
-                System.out.println("Enter your desired groupName: ");
-                String groupName = scanner.nextLine();
+                    if(inputText.equalsIgnoreCase("-ChaneEmail")&&checkIfLoggedIn()){
+                        System.out.print("New Email: ");
+                        String newEmail=scanner.nextLine();
+                        changeEmail(newEmail);
+                    }
+                    else if(inputText.equalsIgnoreCase("-ChangePrivacyMode")&&checkIfLoggedIn()){
+                        System.out.println("do you want your account be private? : ");
+                        String answer=scanner.nextLine();
+                        changePrivacy(answer);
+                    }
+                    else if(inputText.startsWith("-ChangeBirthday")&&checkIfLoggedIn()){
+                        System.out.println("ned birthday(yyyy/mm/dd): ");
+                        String birthday=scanner.nextLine();
+                        changeBirthday(birthday);
+                    }
+                    else if(inputText.startsWith("-ChangeUserName")&&checkIfLoggedIn()){
+                        String newUserName="a a";
+                        while(newUserName.split("\\s").length==1) {
+                            System.out.print("new UserName(Can't use space): ");
+                            newUserName = scanner.nextLine();
+                        }
+                        changeUserName(newUserName);
+                    }
+                    else if(inputText.equalsIgnoreCase("-ChangeGender")&&checkIfLoggedIn()){
+                        System.out.println("tell us your gender with 1 for male and 2 for female");
+                        String gender=scanner.nextLine();
+                        changeGender(gender);
+                    }
+                    else if(inputText.startsWith("-Follow")&&checkIfLoggedIn()){
+                        follow(inputText.split("\\s"));
+                    }
+                    else if(inputText.equalsIgnoreCase("-CreatePost")&&checkIfLoggedIn()){
+                        System.out.println("type your Text here: ");
+                        String postText=scanner.nextLine();
+                        postProgress(postText);
+                    }
+                    else if(inputText.equalsIgnoreCase("-DeletePost")&&checkIfLoggedIn()) {
+                        System.out.print("Which post do you want to delete: ");
+                        String postID = scanner.nextLine();
+                        try {
+                            User.untweet(postID);
+                        }
+                        catch (NoUserLoggedInException | UnauthorisedEditException | UserDoesNotExistException | PostDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (inputText.equalsIgnoreCase("-SuggestUsers") && checkIfLoggedIn()) {
+                        try {
+                            User.suggestFollowings();
+                        }
+                        catch (UserDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
 
-                try {
-                    String groupID = Group.getGroupID(groupName);
-                    User.showGroupInfo(groupID);
-                    groupHelp();
-                } catch (GroupDoesNotExistException | NoUserLoggedInException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(inputText.equalsIgnoreCase("-showGroupChat")&&checkIfLoggedIn()){
-                System.out.println("need groupID to show you last few group messages");
-                String groupID=scanner.nextLine();
-                showChatGP(groupID);
-            }
-            else if(inputText.startsWith("-DeleteComment")&&checkIfLoggedIn()){
-                deleteComment(inputText.split("\\s")[1]);
-            }///deleteComment postID
-            else if(inputText.equalsIgnoreCase("-CreateGroup")&&checkIfLoggedIn()){
-                System.out.print("give us a name for your group: ");
-                String groupName=scanner.nextLine();
-                createGroup(groupName);
+                    }
+                    else if(inputText.equalsIgnoreCase("-ShowLikes")&&checkIfLoggedIn()){
+                        System.out.println("please say PostID to show Likes");
+                        String postID=scanner.nextLine();
+                        showLikes(postID);
+                    }
+                    else if(inputText.equalsIgnoreCase("-ShowStats")&&checkIfLoggedIn()){
+                        showStats();
+                    }
+                    else if(inputText.equalsIgnoreCase("-EditMessage")&&checkIfLoggedIn()){
+                        System.out.println("write down messageID to edit: ");
+                        String messageID=scanner.nextLine();
+                        editMessage(messageID);
+                    }
+                    else if(inputText.equalsIgnoreCase("-showDirectMessage")&&checkIfLoggedIn()){
+                        System.out.println("who do you want to see your message(receiverUserName) : ");
+                        String secondUserID=scanner.nextLine();
+                        showDirectMessages(secondUserID);
+                    }
+                    else if(inputText.equalsIgnoreCase("-DeleteMessage")&&checkIfLoggedIn()){
+                        String messageID=scanner.nextLine();
+                        deleteMessage(messageID);
+                    }
+                    else if(inputText.startsWith("-Comment")&&checkIfLoggedIn()){
+                        System.out.print("Enter postID to comment: ");
+                        String postID = scanner.nextLine();
 
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-AddMember")&&checkIfLoggedIn()){
-                System.out.print("in what group you want to add: ");
-                String groupName=scanner.nextLine();
-                addMember(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-RemoveMember")&&checkIfLoggedIn()){
-                System.out.print("in what group you want to remove: ");
-                String groupName=scanner.nextLine();
-                removeMember(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-BanMember")&&checkIfLoggedIn()){
-                System.out.print("in what group you want to ban: ");
-                String groupName=scanner.nextLine();
-                banMember(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-UnbanMember")&&checkIfLoggedIn()){
-                System.out.print("in what group you want to unban: ");
-                String groupName=scanner.nextLine();
-                unbanMember(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-AddAdmin")&&checkIfLoggedIn()){
-                System.out.println("in what group you want to add Admin: ");
-                String groupName=scanner.nextLine();
-                addAdmin(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-RemoveAdmin")&&checkIfLoggedIn()){
-                System.out.println("in what group you want to remove Admin: ");
-                String groupName=scanner.nextLine();
-                removeAdmin(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-ChangeGroupName")&&checkIfLoggedIn()){
-                System.out.println("in what group you want to change name: ");
-                String groupName=scanner.nextLine();
-                changeGroupName(groupName);
-            }//just type -command
-            else if(inputText.equalsIgnoreCase("-forwardMessage")&&checkIfLoggedIn()) {
-                System.out.println("messageID you want to forward: ");
-                String messageID=scanner.nextLine();
-                forwardMessageProgress(messageID);
-            }
-            else if(inputText.startsWith("-BlockUser")&&checkIfLoggedIn()){
-                System.out.print("we also need username of user you want to block: ");
-                String userName=scanner.nextLine();
-                blockUser(userName);
-            }
-            else if(inputText.startsWith("-UnblockUser")&&checkIfLoggedIn()){
-                System.out.print("we also need username of user you want to unblock: ");
-                String userName=scanner.nextLine();
-                unblockUser(userName);
-            }
-            else if(inputText.equalsIgnoreCase("-LogOut")){
-                try {
-                    User.logout();
+                        System.out.println("Now enter your comment: ");
+                        String comment = scanner.nextLine();
+                        commentingOnPost(postID, comment);
+                    }
+                    else if(inputText.startsWith("-ShowPage")&&checkIfLoggedIn()){
+                        String userName=inputText.split("\\s",2)[1];
+                        showPage(userName);
+                    }
+                    else if(inputText.equalsIgnoreCase("DeleteAccount")&&checkIfLoggedIn()){
+                        System.out.println("you need to tell us the password for being sure about it");
+                        System.out.print("password: ");
+                        String password=scanner.nextLine();
+                        deleteUser(password);
+                    }
+                    else if(inputText.startsWith("-Like")&&checkIfLoggedIn()){
+                        String postID=inputText.split("\\s",2)[1];
+                        likeTweet(postID);
+                    }
+                    else if(inputText.startsWith("-Unlike")&&checkIfLoggedIn()){
+                        String postID=inputText.split("\\s",2)[1];
+                        unLikeTweet(postID);
+                    }
+                    else if(inputText.equalsIgnoreCase("-showRequests")&&checkIfLoggedIn()){
+                        showRequests();
+                    }
+                    else if(inputText.startsWith("-AcceptRequest")&&checkIfLoggedIn()){
+                        acceptFollowReq(inputText.split("\\s",2)[1]);
+                    }
+                    else if(inputText.equalsIgnoreCase("-AccountStats")&&checkIfLoggedIn()){
+                        accountStats();
+                    }
+                    else if(inputText.equalsIgnoreCase("-SendDirectMessage")&&checkIfLoggedIn()){
+                        System.out.print("userName of receiver: ");
+                        String receiver=scanner.nextLine();
+                        System.out.print("now type your text: ");
+                        String messageText=scanner.nextLine();
+                        sendDM(messageText,receiver);
+                        messageHelp();
+                    }
+                    else if(inputText.equalsIgnoreCase("-GroupMessage")&&checkIfLoggedIn()){
+                        System.out.print("GroupName receiving your message: ");
+                        String receivingGroup=scanner.nextLine();
+                        System.out.print("now type your text: ");
+                        String messageText=scanner.nextLine();
+                        sendGroupMessage(messageText,receivingGroup);
+                    }
+                    else if(inputText.equalsIgnoreCase("-ShowNewMessages")&&checkIfLoggedIn()){
+                        try {
+                            User.showNewMessages();
+                        } catch (NoUserLoggedInException | UserDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(inputText.equalsIgnoreCase("-ShowGroups")&&checkIfLoggedIn()){
+                        try {
+                            User.showMyGroups();
+                            groupHelp();
+                        } catch (NoUserLoggedInException | UserDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (inputText.equalsIgnoreCase("-ShowGroupInfo") && checkIfLoggedIn() ) {
+                        System.out.println("Enter your desired groupName: ");
+                        String groupName = scanner.nextLine();
+
+                        try {
+                            String groupID = Group.getGroupID(groupName);
+                            User.showGroupInfo(groupID);
+                            groupHelp();
+                        } catch (GroupDoesNotExistException | NoUserLoggedInException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(inputText.equalsIgnoreCase("-showGroupChat")&&checkIfLoggedIn()){
+                        System.out.println("need groupID to show you last few group messages");
+                        String groupID=scanner.nextLine();
+                        showChatGP(groupID);
+                    }
+                    else if (inputText.equalsIgnoreCase("-searchMessage") && checkIfLoggedIn()) {
+                        System.out.print("Type your search content: ");
+                        String content = scanner.nextLine();
+                        try {
+                            User.searchMessage(content);
+                            System.out.print("Which messageID did you mean particularly? ");
+                            String messageID = scanner.nextLine();
+                            Message.showMessage(messageID, User.getUserID(User.LoggedInUsername));
+                        }
+                        catch (NoUserLoggedInException | UserDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (inputText.equalsIgnoreCase("-ShowFeed") && checkIfLoggedIn()) {
+                        try {
+                            User.mainFeed();
+                        }
+                        catch (NoUserLoggedInException | UserDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (inputText.equalsIgnoreCase("-ShowComments") && checkIfLoggedIn()) {
+                        System.out.print("Enter the postID for which you want to see the comments: ");
+                        String postID = scanner.nextLine();
+                        try {
+                            User.showComments(postID);
+                        }
+                        catch (NoUserLoggedInException | UserDoesNotExistException | UnauthorisedEditException | PostDoesNotExistException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(inputText.startsWith("-DeleteComment")&&checkIfLoggedIn()){
+                        deleteComment(inputText.split("\\s")[1]);
+                    }///deleteComment postID
+                    else if(inputText.equalsIgnoreCase("-CreateGroup")&&checkIfLoggedIn()){
+                        System.out.print("give us a name for your group: ");
+                        String groupName=scanner.nextLine();
+                        createGroup(groupName);
+
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-AddMember")&&checkIfLoggedIn()){
+                        System.out.print("in what group you want to add: ");
+                        String groupName=scanner.nextLine();
+                        addMember(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-RemoveMember")&&checkIfLoggedIn()){
+                        System.out.print("in what group you want to remove: ");
+                        String groupName=scanner.nextLine();
+                        removeMember(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-BanMember")&&checkIfLoggedIn()){
+                        System.out.print("in what group you want to ban: ");
+                        String groupName=scanner.nextLine();
+                        banMember(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-UnbanMember")&&checkIfLoggedIn()){
+                        System.out.print("in what group you want to unban: ");
+                        String groupName=scanner.nextLine();
+                        unbanMember(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-AddAdmin")&&checkIfLoggedIn()){
+                        System.out.println("in what group you want to add Admin: ");
+                        String groupName=scanner.nextLine();
+                        addAdmin(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-RemoveAdmin")&&checkIfLoggedIn()){
+                        System.out.println("in what group you want to remove Admin: ");
+                        String groupName=scanner.nextLine();
+                        removeAdmin(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-ChangeGroupName")&&checkIfLoggedIn()){
+                        System.out.println("in what group you want to change name: ");
+                        String groupName=scanner.nextLine();
+                        changeGroupName(groupName);
+                    }//just type -command
+                    else if(inputText.equalsIgnoreCase("-forwardMessage")&&checkIfLoggedIn()) {
+                        System.out.println("messageID you want to forward: ");
+                        String messageID=scanner.nextLine();
+                        forwardMessageProgress(messageID);
+                    }
+                    else if(inputText.startsWith("-BlockUser")&&checkIfLoggedIn()){
+                        System.out.print("we also need username of user you want to block: ");
+                        String userName=scanner.nextLine();
+                        blockUser(userName);
+                    }
+                    else if(inputText.startsWith("-UnblockUser")&&checkIfLoggedIn()){
+                        System.out.print("we also need username of user you want to unblock: ");
+                        String userName=scanner.nextLine();
+                        unblockUser(userName);
+                    }
+                    else if(inputText.equalsIgnoreCase("-LogOut")){
+                        try {
+                            User.logout();
+                        } catch (NoUserLoggedInException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        System.out.println("invalid command");
+                    }
                 } catch (NoUserLoggedInException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
-                System.out.println("invalid command");
             }
         }
     }
@@ -345,8 +388,11 @@ public class InputProcessor {
         System.out.println("-GroupMessage for send a group message");
         System.out.println("-showPage userName you can see other people page ");
     }
-    public boolean checkIfLoggedIn(){
-        return User.getLoggedInUsername() != null;
+    public boolean checkIfLoggedIn() throws NoUserLoggedInException {
+        if (User.getLoggedInUsername() != null)
+            return true;
+        else
+            throw new NoUserLoggedInException("No user logged in yet...");
     }
     public void mainMenu(){
         System.out.println("hello, you are Logged in! you can use: ");
@@ -372,9 +418,11 @@ public class InputProcessor {
         }
     }
     public void createAccount(){
-        String userName="";
+        System.out.print("choose a username:(at least 7 character no space and at least one digit) ");
+        String userName= scanner.nextLine();
         while(userName.length()<7||!ifThereIsNumber(userName)||userName.split("\\s").length>1) {
-            userName = pickingUserName(userName);
+            System.out.print("choose a username:(at least 7 character no space and at least one digit) ");
+            userName = scanner.nextLine();
         }
         String password="";
         while(password.length()<7||password.split("\\s").length>1) {
@@ -392,6 +440,10 @@ public class InputProcessor {
         String lastname=scanner.nextLine();
         System.out.print("Email Address: ");
         String emailAddress=scanner.nextLine();
+        while (emailAddress.split("\\.").length!=2 || !emailAddress.endsWith(".com")) {
+            System.out.println("Emalil Address: (format isn't right): ");
+            emailAddress = scanner.nextLine();
+        }
         String phoneNumber="00";
         while(phoneNumber.length()!=11){
             System.out.print("Phone Number(11 digit) : ");
@@ -402,7 +454,7 @@ public class InputProcessor {
         System.out.println("Do you want have a private Account?(yes/no): ");
         String isPrivate=scanner.nextLine();
         String birthday="Null";
-        while(pickingBirthdayAndCheckFormat(birthday)){
+        while(!pickingBirthdayAndCheckFormat(birthday)||birthday.equalsIgnoreCase("null")){
             System.out.println("Your Birthday (yyyy/mm/dd): ");
             birthday=scanner.nextLine();
         }
@@ -508,7 +560,7 @@ public class InputProcessor {
         //information[1] gotFollowedUser
         try {
             User.sendFollowRequest(information[1]);
-        } catch (UserAlreadyFollowedException | UserDoesNotExistException | NoUserLoggedInException e) {
+        } catch (UserAlreadyFollowedException | UserDoesNotExistException | NoUserLoggedInException | UnauthorisedEditException e) {
             e.printStackTrace();
         }
     }
@@ -538,10 +590,10 @@ public class InputProcessor {
     }
     public void showStats(){
         try {
-            System.out.println("please say PostID to show stats");
+            System.out.print("please say PostID to show stats: ");
             String postID=scanner.nextLine();
             BusinessUser.viewPostStats(postID);
-        } catch (NoUserLoggedInException | UserNotBusinessException | PostDoesNotExistException e) {
+        } catch (NoUserLoggedInException | UserNotBusinessException | PostDoesNotExistException | UnauthorisedEditException e) {
             e.printStackTrace();
         }
     }
@@ -579,11 +631,11 @@ public class InputProcessor {
         //           e.printStackTrace();
         //       }
     }
-    public void commentingOnPost(String[] information){
+    public void commentingOnPost(String postID, String comment){
         try {
             try {
-                User.commentOnTweet(User.getUserID(information[1]),information[2]);
-            } catch (UserDoesNotExistException e) {
+                User.commentOnTweet(postID, comment);
+            } catch (UserDoesNotExistException | PostAlreadyCommentedException | PostDoesNotExistException | UnauthorisedEditException e) {
                 e.printStackTrace();
             }
         } catch (NoUserLoggedInException e) {
@@ -593,7 +645,7 @@ public class InputProcessor {
     public void showPage(String userName){
         try {
             User.visitPage(userName);
-        } catch (UserDoesNotExistException | NoUserLoggedInException e) {
+        } catch (UserDoesNotExistException | NoUserLoggedInException | UnauthorisedEditException e) {
             e.printStackTrace();
         }
     }
@@ -605,44 +657,24 @@ public class InputProcessor {
         }
     }
     public void likeTweet(String postID){
-        //     try {
-        //         Post.likePost(inActionUserName,postID);
-        //     } catch (PostDoesNotExistException e) {
-        //         e.printStackTrace();
-        //     }
-        //     try {
-        //         Like.likePost(inActionUserName,postID);
-        //     } catch (PostAlreadyLikedException e) {
-        //        e.printStackTrace();
-        //     }
         try {
             User.likeTweet(postID);
-        } catch (NoUserLoggedInException e) {
+        } catch (NoUserLoggedInException | UserDoesNotExistException | PostDoesNotExistException | UnauthorisedEditException | PostAlreadyLikedException e) {
             e.printStackTrace();
         }
     }
     public void unLikeTweet(String postID){
-        //            try {
-        //           Post.unlikePost(inActionUserName,postID);
-        //      } catch (PostDoesNotExistException e) {
-        //         e.printStackTrace();
-        //        }
         try {
             User.unlikeTweet(postID);
-        } catch (NoUserLoggedInException e) {
+        } catch (NoUserLoggedInException | UserDoesNotExistException | PostNotLikedException | UnauthorisedEditException | PostDoesNotExistException e) {
             e.printStackTrace();
         }
-        //      try {
-        //          Like.unlikePost(inActionUserName,postID);
-        //      } catch (PostNotLikedException e) {
-        //          e.printStackTrace();
-        //      }
     }
     public void showRequests(){
         try {
             User.manageFollowRequest();
             ///we also need to show them to manage it by accpetRequest//
-        } catch (NoUserLoggedInException e) {
+        } catch (NoUserLoggedInException | UserDoesNotExistException e) {
             e.printStackTrace();
         }
     }
@@ -654,9 +686,11 @@ public class InputProcessor {
         }
     }
     public void accountStats(){
+        System.out.print("Show stats for what username: ");
+        String username = scanner.nextLine();
         try {
-            BusinessUser.viewAccountStats();
-        } catch (NoUserLoggedInException | UserNotBusinessException e) {
+            BusinessUser.viewAccountStats(username);
+        } catch (NoUserLoggedInException | UserNotBusinessException | UserDoesNotExistException e) {
             e.printStackTrace();
         }
     }
@@ -696,7 +730,7 @@ public class InputProcessor {
     public void deleteComment(String postID){
         try {
             User.deleteComment(postID);
-        } catch (NoUserLoggedInException e) {
+        } catch (NoUserLoggedInException | PostNotCommentedException | UserDoesNotExistException | PostDoesNotExistException | UnauthorisedEditException e) {
             e.printStackTrace();
         }
     }

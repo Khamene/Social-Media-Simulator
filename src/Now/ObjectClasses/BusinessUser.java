@@ -3,9 +3,10 @@ package ObjectClasses;
 import Exceptions.*;
 import Functionality.SQLManager;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class BusinessUser extends User{
+public abstract class BusinessUser extends User{
     static int idCounter = 0;
     public static void createBusinessAccount(String username, String password, String firstName,
                                              String lastName, String email, String phoneNumber, boolean gender,
@@ -17,12 +18,38 @@ public class BusinessUser extends User{
                 , q1, a1, q2, a2, age);
     }
 
-    public static void viewAccountStats() throws NoUserLoggedInException, UserNotBusinessException {
+    public static void viewAccountStats(String username) throws NoUserLoggedInException, UserNotBusinessException, UserDoesNotExistException{
+        if (User.getUserType(username) == false)
+            throw new UserNotBusinessException("Info can not be shared on a personal account...");
 
+        try {
+            SQLManager.showAccountStats(User.getUserID(username));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void viewPostStats(String postID) throws NoUserLoggedInException, UserNotBusinessException, PostDoesNotExistException {
+    public static void viewPostStats(String postID) throws NoUserLoggedInException, UserNotBusinessException, PostDoesNotExistException, UnauthorisedEditException {
+        Post.checkPostID(postID);
 
+        checkAccount(postID);
+
+        try {
+            SQLManager.showPostStats(postID);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void checkAccount(String postID) throws UnauthorisedEditException {
+        try {
+            if (SQLManager.checkAccount(postID) == -1)
+                throw new UnauthorisedEditException("Info can not be shared on a personal account...");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String assignID(){

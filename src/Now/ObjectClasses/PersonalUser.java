@@ -5,7 +5,7 @@ import Functionality.SQLManager;
 import java.time.LocalDate;
 
 
-public class PersonalUser extends User{
+public abstract class PersonalUser extends User{
     static int idCounter = 0;
 
     public static void createNewPersonalAccount(String username, String password, String firstName,
@@ -21,9 +21,5 @@ public class PersonalUser extends User{
 
     public static String assignID() {
         return String.format("#PU" + idCounter++);
-    }
-
-    public static void congratulateOnBirthDay(){
-        LocalDate date = LocalDate.now();
     }
 }

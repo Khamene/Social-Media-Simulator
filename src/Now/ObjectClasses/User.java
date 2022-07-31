@@ -3,32 +3,9 @@ import Exceptions.*;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import Functionality.SQLManager;
-import org.w3c.dom.ls.LSOutput;
 
 public abstract class User {
-    private int age;
-    private String userID;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String password;
-    private String emailAddress;
-    private String phoneNumber;
-    private boolean gender;
-    private boolean userType;
-    private boolean isPrivate;
-    private LocalDate createdDate;
-    int followerCount;
-    int followingCount;
-    LocalDate birthday;
-
-    private ArrayList<User> Following = new ArrayList<>();
-    private ArrayList<User> Followers = new ArrayList<>();
-    private ArrayList<Group> group = new ArrayList<>();
-    private ArrayList<Post> tweets = new ArrayList<>();
-
     static String LoggedInUsername  = null;
     static boolean legiblePasswordChange = false;
 
@@ -39,6 +16,13 @@ public abstract class User {
             case 0:
                 System.out.printf("User %s logged in successfully...%n", username);
                 LoggedInUsername = username;
+
+                try {
+                    SQLManager.congratulateBirthday(LoggedInUsername);
+                }
+                catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case -1:
                 throw new UserDoesNotExistException("No user exists with this username...");
@@ -263,7 +247,32 @@ public abstract class User {
         legiblePasswordChange = false;
     }
 
-    public static void visitPage(String otherUsername) throws UserDoesNotExistException,NoUserLoggedInException {
+    //COMPLETE THIS ONE
+    public static void visitPage(String otherUsername) throws UserDoesNotExistException, NoUserLoggedInException, UnauthorisedEditException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+
+        String userID = User.getUserID(LoggedInUsername);
+
+        if (otherUsername.equalsIgnoreCase(LoggedInUsername)) {
+            try {
+                SQLManager.visitPage(userID, userID);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            String otherUserID = User.getUserID(otherUsername);
+            checkFollowedAccount(userID, otherUserID);
+
+            try {
+                SQLManager.visitPage(otherUserID, userID);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -276,8 +285,22 @@ public abstract class User {
         Post.publishPost(userID, content);
     }
 
-    public static void tweet(String content, String filepath) throws NoUserLoggedInException{
+//    public static void tweet(String content, String filepath) throws NoUserLoggedInException{
+//
+//    }
 
+    public static void mainFeed() throws NoUserLoggedInException, UserDoesNotExistException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+
+        String userID = User.getUserID(LoggedInUsername);
+
+        try {
+            SQLManager.showFeed(userID);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void untweet(String postID) throws NoUserLoggedInException, UnauthorisedEditException, UserDoesNotExistException, PostDoesNotExistException {
@@ -289,6 +312,20 @@ public abstract class User {
         Post.checkMyPost(postID, userID);
 
         Post.deletePost(postID);
+    }
+
+    public static void searchMessage(String content) throws UserDoesNotExistException, NoUserLoggedInException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+
+        String userID = User.getUserID(LoggedInUsername);
+
+        try {
+            SQLManager.searchMessage(userID, content);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void sendDirectMessage(String receiverUsername, String content) throws NoUserLoggedInException,
@@ -472,14 +509,31 @@ public abstract class User {
         }
     }
 
-    public static void sendFollowRequest(String username) throws UserAlreadyFollowedException, UserDoesNotExistException, NoUserLoggedInException{
+    public static void suggestFollowings() throws NoUserLoggedInException, UserDoesNotExistException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+
+        try {
+            SQLManager.suggestUsers(User.getUserID(LoggedInUsername));
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendFollowRequest(String username) throws UserAlreadyFollowedException, UserDoesNotExistException, NoUserLoggedInException, UnauthorisedEditException {
         if (LoggedInUsername == null)
             throw new NoUserLoggedInException("No user logged in yet...");
 
         String userID = User.getUserID(LoggedInUsername);
         String otherUserID = User.getUserID(username);
 
-        int result = SQLManager.sendFollowRequest(userID, otherUserID);
+        int result = 0;
+        try {
+            result = SQLManager.sendFollowRequest(userID, otherUserID);
+        } catch (UnauthorisedEditException e) {
+            throw e;
+        }
 
         switch (result) {
             case 0:
@@ -496,11 +550,11 @@ public abstract class User {
         }
     }
 
-    public static void manageFollowRequest() throws NoUserLoggedInException{
+    public static void manageFollowRequest() throws NoUserLoggedInException, UserDoesNotExistException {
         if (LoggedInUsername == null)
             throw new NoUserLoggedInException("No user logged in yet...");
 
-        SQLManager.manageFollowRequests(LoggedInUsername);
+        SQLManager.manageFollowRequests(User.getUserID(LoggedInUsername));
     }
 
     public static void acceptFollowRequest(String followerUsername) throws NoUserLoggedInException, UserDoesNotExistException, FollowRequestDoesNotExistException {
@@ -527,19 +581,109 @@ public abstract class User {
         }
     }
 
-    public static void commentOnTweet(String postID, String content) throws NoUserLoggedInException {
+    public static void commentOnTweet(String postID, String content) throws NoUserLoggedInException, UserDoesNotExistException, PostDoesNotExistException, UnauthorisedEditException, PostAlreadyCommentedException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
 
+        String userID = User.getUserID(LoggedInUsername);
+
+        Comment.alreadyComment(postID, userID);
+
+        try {
+            int result = SQLManager.commentPost(userID, postID, content);
+
+            if (result == 0)
+                System.out.println("Post successfully commented...");
+            else if (result == -1)
+                throw new PostDoesNotExistException("No such post exists...");
+            else
+                throw new UnauthorisedEditException("You can not interact with a post of someone you do not follow...");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void deleteComment(String postID) throws NoUserLoggedInException {
+    public static void showComments(String postID) throws NoUserLoggedInException, UserDoesNotExistException, UnauthorisedEditException, PostDoesNotExistException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
 
+        String userID = User.getUserID(LoggedInUsername);
+
+        Post.checkPostID(postID);
+
+        Post.checkFollowedPost(postID, userID);
+
+        Post.showComments(postID);
     }
 
-    public static void likeTweet(String postID) throws NoUserLoggedInException{
+    public static void deleteComment(String postID) throws NoUserLoggedInException, UserDoesNotExistException, PostNotCommentedException, PostDoesNotExistException, UnauthorisedEditException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
 
+        String userID = User.getUserID(LoggedInUsername);
+
+        Comment.notCommented(postID, userID);
+
+        try {
+            int result = SQLManager.unCommentPost(userID, postID);
+
+            if (result == 0)
+                System.out.println("Comment deleted successfully...");
+            else if (result == -1)
+                throw new PostDoesNotExistException("No such post exists...");
+            else
+                throw new UnauthorisedEditException("You can not interact with a post of someone you do not follow...");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void unlikeTweet(String postID) throws NoUserLoggedInException {
+    public static void likeTweet(String postID) throws NoUserLoggedInException, UserDoesNotExistException, PostDoesNotExistException, UnauthorisedEditException, PostAlreadyLikedException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+
+        String userID = User.getUserID(LoggedInUsername);
+
+        Like.alreadyLike(postID, userID);
+
+        try {
+           int result = SQLManager.likePost(userID, postID);
+
+           if (result == 0)
+               System.out.println("Post successfully liked...");
+           else if (result == -1)
+               throw new PostDoesNotExistException("No such post exists...");
+           else
+               throw new UnauthorisedEditException("You can not interact with a post of someone you do not follow...");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void unlikeTweet(String postID) throws NoUserLoggedInException, UserDoesNotExistException, PostNotLikedException, UnauthorisedEditException, PostDoesNotExistException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
+
+        String userID = User.getUserID(LoggedInUsername);
+
+        Like.notLiked(postID, userID);
+
+        try {
+            int result = SQLManager.unlikePost(userID, postID);
+
+            if (result == 0)
+                System.out.println("Post unliked successfully...");
+            else if (result == -1)
+                throw new PostDoesNotExistException("No such post exists...");
+            else
+                throw new UnauthorisedEditException("You can not interact with a post of someone you do not follow...");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -573,10 +717,20 @@ public abstract class User {
         }
     }
 
+    public static void checkFollowedAccount(String followerID, String followedID) throws UnauthorisedEditException {
+        try {
+            if (SQLManager.checkFollowedAccount(followerID, followedID) == -1)
+                throw new UnauthorisedEditException("User is not followed by you");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //getters
 
     public static boolean getUserType(String username) throws  UserDoesNotExistException{
-        String userType = SQLManager.getUserType(LoggedInUsername);
+        String userType = SQLManager.getUserType(username);
 
         if (userType.equals(""))
             throw new UserDoesNotExistException("No user exists with this username...");

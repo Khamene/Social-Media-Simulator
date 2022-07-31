@@ -5,7 +5,7 @@ import Functionality.SQLManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Group {
+public abstract class Group {
     static int idCounter = 0;
 
     public static void createGroup(String groupName,String ownerID, boolean isPrivate) {
@@ -164,7 +164,7 @@ public class Group {
             if (result == -1)
                 throw new UserDoesNotExistException("No such user exists...");
 
-            System.out.printf("User %s successfully unrestricted...", memberID);
+            System.out.printf("User %s successfully unrestricted...%n", memberID);
         }
         catch (SQLException e) {
             e.printStackTrace();

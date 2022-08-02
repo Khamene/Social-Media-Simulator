@@ -448,7 +448,7 @@ public class InputProcessor {
         String lastname=scanner.nextLine();
         System.out.print("Email Address: ");
         String emailAddress=scanner.nextLine();
-        while (emailAddress.split("\\.").length!=2 || !emailAddress.endsWith(".com")) {
+        while (!emailAddress.endsWith(".com")) {
             System.out.println("Emalil Address: (format isn't right): ");
             emailAddress = scanner.nextLine();
         }
@@ -459,15 +459,27 @@ public class InputProcessor {
         }
         System.out.print("Gender (1 for male,2 for female): ");
         String gender=scanner.nextLine();
+        while(!gender.equalsIgnoreCase("1")&&!gender.equalsIgnoreCase("2")){
+            System.out.print("Gender (1 for male,2 for female): ");
+            gender=scanner.nextLine();
+        }
         System.out.println("Do you want have a private Account?(yes/no): ");
         String isPrivate=scanner.nextLine();
+        while(!isPrivate.equalsIgnoreCase("yes")&&!isPrivate.equalsIgnoreCase("No")){
+            System.out.println("Do you want have a private Account?(yes/no): ");
+            isPrivate=scanner.nextLine();
+        }
         String birthday="Null";
-        while(!pickingBirthdayAndCheckFormat(birthday)||birthday.equalsIgnoreCase("null")){
+        while(birthday.equalsIgnoreCase("null")||!pickingBirthdayAndCheckFormat(birthday)){
             System.out.println("Your Birthday (yyyy/mm/dd): ");
             birthday=scanner.nextLine();
         }
         System.out.println("Commercial or Normal?(answer with C for commercial or N for Normal)");
         String accountType=scanner.nextLine();
+        while(!accountType.equalsIgnoreCase("N")||!accountType.equalsIgnoreCase("C")){
+            System.out.println("Bruh. N or C");
+            accountType=scanner.nextLine();
+        }
         System.out.println("choose what question you want answer?(write down number,example:1 2)");
         System.out.println("1-WHAT WAS THE NAME OF YOUR CHILDHOOD PET?");
         System.out.println("2-WHERE DID YOUR PARENTS MEET IN THE FIRST TIME?");
@@ -476,6 +488,12 @@ public class InputProcessor {
         System.out.println("5-WHAT WAS YOUR CHILDHOOD DREAM JOB?");
         String answer=scanner.nextLine();
         String[] answerNumber=answer.split("\\s");
+        while(Integer.parseInt(answerNumber[0])<0||Integer.parseInt(answerNumber[0])>5||Integer.parseInt(answerNumber[1])<0||
+                Integer.parseInt(answerNumber[1])>5){
+            System.out.println("come on dude. between 1 and 5");
+             answer=scanner.nextLine();
+             answerNumber=answer.split("\\s");
+        }
         System.out.println("Answer to question "+answerNumber[0]);
         String securityQuestion1=scanner.nextLine();
         System.out.println("Answer to question "+answerNumber[1]);
@@ -879,6 +897,38 @@ public class InputProcessor {
                 }
             }
         }
+        return checkFormatNumberBirthday(birthdaySplited);
+    }
+    public boolean checkFormatNumberBirthday(String[] monthYearDay){
+        int monthNumber=Integer.parseInt(monthYearDay[1]);
+        int dayNumber=Integer.parseInt(monthYearDay[2]);
+        int yearNumber=Integer.parseInt(monthYearDay[0]);
+        if(monthNumber<0||monthNumber>12){
+            System.out.println("month format is wrong.1-12");
+            return false;
+        }
+        if(monthNumber==1||monthNumber==3||monthNumber==5||monthNumber==7||monthNumber==8||monthNumber==10||monthNumber==12){
+            if(dayNumber<0||dayNumber>31){
+                System.out.println("day format isn't right. 1-31");
+                return false;
+            }
+        }
+        else if(monthNumber==2){
+            if(dayNumber<0||dayNumber>29){
+                System.out.println("day format isn't right. 1-29 for February");
+                return false;
+            }
+        }
+        else{
+            if(dayNumber<0||dayNumber>30){
+                System.out.println("day format isn't right. 1-30");
+                return false;
+            }
+        }
+        if(yearNumber<0||yearNumber>2022){
+            return false;
+        }
         return true;
+
     }
 }

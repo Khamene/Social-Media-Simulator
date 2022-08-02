@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class SQLManager {
     static String url = "jdbc:mysql://localhost:3306/twitter";
     static String username = "root";
-    static String password = "MehrshadTaji2571381";
+    static String password = "rahimi1382";
 
     static Connection con = null;
     static Statement statement = null;

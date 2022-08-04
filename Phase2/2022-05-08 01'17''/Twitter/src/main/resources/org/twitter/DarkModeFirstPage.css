@@ -1,0 +1,31 @@
+#firstStage {
+    -fx-background-color: #111111;
+}
+
+#usernameInvalid {
+    -fx-background-color: #111111;
+}
+
+#passwordInvalid {
+    -fx-background-color: #111111;
+}
+
+#firstPageVbox {
+    -fx-background-color: #111111;
+}
+
+#darkMode {
+    -fx-background-color: #0571ED;
+}
+
+#lightMode {
+    -fx-background-color:  #111111;
+}
+
+#line {
+    -fx-stroke: #ffffff
+}
+
+#noAccount {
+    -fx-text-fill: #ffffff;
+}

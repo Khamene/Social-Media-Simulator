@@ -1,0 +1,27 @@
+.root {
+    -fx-background-color: #ffffff;
+}
+
+#usernameInvalid {
+    -fx-background-color: #ffffff;
+}
+
+#passwordInvalid {
+    -fx-background-color: #ffffff;
+}
+
+#firstPageVbox {
+    -fx-background-color: #ffffff;
+}
+
+.vbox {
+    -fx-background-color: #ffffff;
+}
+
+#darkMode {
+    -fx-background-color: #ffffff;
+}
+
+#lightMode {
+    -fx-background-color: #0571ED;
+}

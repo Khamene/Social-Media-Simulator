@@ -17,6 +17,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setMinHeight(450);
         stage.setMinWidth(650);
+        stage.setTitle("FXgram");
         stage.show();
     }
 
@@ -29,7 +30,7 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxmls\\" + fxml + ".fxml"));
         return fxmlLoader.load();
     }
 

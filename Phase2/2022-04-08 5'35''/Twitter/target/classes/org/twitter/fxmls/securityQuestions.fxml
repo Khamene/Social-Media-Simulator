@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="securityQuestions" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.SecurityQuestionsController">
+   <children>
+      <VBox layoutX="229.0" layoutY="25.0" prefHeight="319.0" prefWidth="342.0">
+         <children>
+            <Label id="title" alignment="CENTER" prefHeight="36.0" prefWidth="354.0" text="Security Questions" />
+            <Label id="description" alignment="CENTER" prefHeight="54.0" prefWidth="489.0" text="Choose two questions to answer while recovering password." />
+            <ChoiceBox prefHeight="35.0" prefWidth="370.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></ChoiceBox>
+            <Label prefHeight="18.0" prefWidth="329.0" />
+            <TextField prefHeight="36.0" prefWidth="300.0" promptText="Answer to first question" />
+            <Label layoutX="10.0" layoutY="100.0" prefHeight="18.0" prefWidth="329.0" />
+            <ChoiceBox layoutX="10.0" layoutY="64.0" prefHeight="35.0" prefWidth="379.0" />
+            <Label layoutX="10.0" layoutY="100.0" prefHeight="18.0" prefWidth="329.0" />
+            <TextField layoutX="10.0" layoutY="118.0" prefHeight="36.0" prefWidth="300.0" promptText="Answer to second question" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

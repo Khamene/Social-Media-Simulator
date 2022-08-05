@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="postViewScrollField" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.AccountViewController">
+   <children>
+      <ScrollPane fx:id="postViewScrollField" layoutX="207.0" layoutY="46.0" prefHeight="323.0" prefWidth="402.0">
+        <content>
+          <AnchorPane fx:id="postViewField" minHeight="0.0" minWidth="0.0" prefHeight="321.0" prefWidth="404.0" />
+        </content>
+      </ScrollPane>
+      <Label fx:id="profileUserName" layoutX="198.0" layoutY="10.0" prefHeight="46.0" prefWidth="177.0" text=":profileName:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="directMessage" layoutX="585.0" layoutY="20.0" mnemonicParsing="false" onAction="#goToDirectMessage" prefHeight="26.0" prefWidth="158.0" text="DirectMessage" />
+      <ToggleButton fx:id="followCheck" layoutX="408.0" layoutY="20.0" mnemonicParsing="false" onAction="#followProcess" prefHeight="13.0" prefWidth="158.0" text="Follow/Unfollow" />
+      <HBox layoutX="209.0" layoutY="372.0" prefHeight="46.0" prefWidth="402.0">
+         <children>
+            <Button fx:id="viewNumberButton" mnemonicParsing="false" onAction="#showViewNumebr" prefHeight="44.0" prefWidth="202.0" text="ViewNumber" />
+            <Button fx:id="followNumberButton" mnemonicParsing="false" onAction="#showFollowNumebr" prefHeight="44.0" prefWidth="202.0" text="FollowNumber" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

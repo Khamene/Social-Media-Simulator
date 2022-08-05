@@ -1,0 +1,46 @@
+.root {
+    -fx-background-color: #ffffff;
+}
+
+#loginBtn {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #0571ED;
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+}
+
+#loginBtn:hover {
+    -fx-background-color: #045dbc;
+
+}
+
+#signUpBtn {
+    -fx-background-color: #42B72A;
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+    -fx-text-fill: white;
+}
+
+#signUpBtn:hover {
+    -fx-background-color: #349c1f;
+}
+
+#usernameInvalid {
+    -fx-background-color: #ffffff;
+}
+
+#passwordInvalid {
+    -fx-background-color: #ffffff;
+}
+
+#firstPageVbox {
+    -fx-background-color: #ffffff;
+}
+
+#darkMode {
+    -fx-background-color: #ffffff;
+}
+
+#lightMode {
+    -fx-background-color: #0571ED;
+}

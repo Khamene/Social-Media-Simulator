@@ -36,6 +36,7 @@ public class SearchPageController implements Initializable {
     Stage myScene = null;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setDimensions();
         searchText.textProperty().addListener(observable -> searchProgress());
         Platform.runLater(new Runnable() {
             @Override
@@ -45,13 +46,13 @@ public class SearchPageController implements Initializable {
 
                     @Override
                     public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-
+                        setDimensions();
                     }
                 });
                 myScene.heightProperty().addListener(new ChangeListener<Number>() {
                     @Override
                     public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-
+                        setDimensions();
                     }
                 });
             }
@@ -108,18 +109,45 @@ public class SearchPageController implements Initializable {
     public void changeFifthHBoxColor(){
         fifthResult.setBackground(new Background(new BackgroundFill(Color.DARKGRAY,null,null)));
     }
+    public void resetFirstHBoxColor(){
+        firstResult.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+    }
+    public void resetSecondHBoxColor(){
+        secondResult.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+    }
+    public void resetThirdHBoxColor(){
+        thirdResult.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+    }
+    public void resetFourthHBoxColor(){
+        fourthResult.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+    }
+    public void resetFifthHBoxColor(){
+        fifthResult.setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
+    }
     public void setDimensions(){
-        searchText.setLayoutX(myScene.getWidth()/2-154);
-        searchText.setLayoutY(myScene.getHeight()/2-211);
-        firstResult.setLayoutX(myScene.getWidth()/2-154);
-        firstResult.setLayoutY(myScene.getWidth()/2-171);
-        secondResult.setLayoutX(myScene.getWidth()/2-154);
-        secondResult.setLayoutY(myScene.getWidth()/2-122);
-        thirdResult.setLayoutX(myScene.getWidth()/2-154);
-        thirdResult.setLayoutY(myScene.getWidth()/2-38);
-        fourthResult.setLayoutX(myScene.getWidth()/2-154);
-        fourthResult.setLayoutY(myScene.getWidth()/2+66);
-        fifthResult.setLayoutX(myScene.getWidth()/2-154);
-        fifthResult.setLayoutY(myScene.getWidth()/2+145);
+        firstResult.setPrefWidth(288*(myScene.getWidth()/800));
+        secondResult.setPrefWidth(288*(myScene.getWidth()/800));
+        thirdResult.setPrefWidth(288*(myScene.getWidth()/800));
+        fourthResult.setPrefWidth(288*(myScene.getWidth()/800));
+        fifthResult.setPrefWidth(288*(myScene.getWidth()/800));
+
+        firstResult.setPrefHeight(85*(myScene.getHeight()/800));
+        secondResult.setPrefHeight(85*(myScene.getHeight()/800));
+        thirdResult.setPrefHeight(85*(myScene.getHeight()/800));
+        fourthResult.setPrefHeight(85*(myScene.getHeight()/800));
+        fifthResult.setPrefHeight(85*(myScene.getHeight()/450));
+
+        searchText.setLayoutX(myScene.getWidth()/2-searchText.getPrefWidth()/2);
+        searchText.setLayoutY(1);
+        firstResult.setLayoutX(myScene.getWidth()/2-firstResult.getPrefWidth()/2);
+        firstResult.setLayoutY(1+searchText.getPrefHeight());
+        secondResult.setLayoutX(myScene.getWidth()/2-firstResult.getPrefWidth()/2);
+        secondResult.setLayoutY(1+searchText.getPrefHeight()+firstResult.getPrefHeight());
+        thirdResult.setLayoutX(myScene.getWidth()/2-firstResult.getPrefWidth()/2);
+        thirdResult.setLayoutY(1+searchText.getPrefHeight()+firstResult.getPrefHeight()*2);
+        fourthResult.setLayoutX(myScene.getWidth()/2-firstResult.getPrefWidth()/2);
+        fourthResult.setLayoutY(1+searchText.getPrefHeight()+firstResult.getPrefHeight()*3);
+        fifthResult.setLayoutX(myScene.getWidth()/2-firstResult.getPrefWidth()/2);
+        fifthResult.setLayoutY(1+searchText.getPrefHeight()+firstResult.getPrefHeight()*4);
     }
 }

@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class SQLManager {
     static String url = "jdbc:mysql://localhost:3306/twitter";
     static String username = "root";
-    static String password = "MehrshadTaji2571381";
+    static String password = "rahimi1382";
 
     static Connection con = null;
     static Statement statement = null;
@@ -2005,6 +2005,33 @@ public class SQLManager {
         catch (SQLException e) {
             System.out.println("Failed to close connection with SQL Database. Terminating the program anyway...");
             System.exit(-1);
+        }
+    }
+    public static boolean getBlocked(String blockerID, String blockedID) throws SQLException {
+        String query = String.format("SELECT * FROM BLOCKS WHERE BLOCKERID = \"%s\" AND BLOCKEDID = \"%s\"", blockerID, blockedID);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next())
+            return true;
+        else
+            return false;
+    }
+    public static void unfollow(String userID, String followedID) throws SQLException{
+        String query = String.format("DELETE FROM RELATION WHERE FOLLOWEID = \"%s\" AND FOLLOWEDID = \"%s\"", userID, followedID);
+
+        statement.execute(query);
+    }
+    public static String getProfilePath(String username) throws SQLException {
+        String query = String.format("SELECT PROFILEPHOTO FROM USERS WHERE USERNAME = \"%s\"", username);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        if (resultSet.next()) {
+            return resultSet.getString(1);
+        }
+        else {
+            return null;
         }
     }
 }

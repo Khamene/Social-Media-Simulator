@@ -793,6 +793,43 @@ public abstract class User {
             e.printStackTrace();
         }
     }
+    public static boolean getBlocked(String username) throws NoUserLoggedInException, UserDoesNotExistException {
+        String userID = User.getUserID(LoggedInUsername);
+        String otherID = User.getUserID(username);
+
+        try {
+            return SQLManager.getBlocked(userID, otherID);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Failed to do the task...");
+        }
+    }
+    public static void unfollow(String followedUsername) throws UserDoesNotExistException {
+        String userID = User.getUserID(LoggedInUsername);
+        String followedID = User.getUserID(followedUsername);
+
+        try {
+            SQLManager.unfollow(userID, followedID);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Operation failed");
+        }
+    }
+    public static String getUserProfile(String username) throws UserDoesNotExistException {
+        try {
+            String profilePath = SQLManager.getProfilePath(username);
+
+            if (profilePath != null)
+                return profilePath;
+            else
+                return "";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Operation failed");
+        }
+    }
 }
 
 

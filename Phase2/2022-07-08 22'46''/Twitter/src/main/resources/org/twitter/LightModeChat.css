@@ -1,0 +1,79 @@
+#darkMode {
+    -fx-background-color: #ffffff;
+}
+
+#lightMode {
+    -fx-background-color: #0571ED;
+}
+
+#allChats {
+    -fx-background-color: #ffffff;
+}
+
+#allChats:selected {
+    -fx-background-color: #0571ED;
+}
+
+#personChat {
+    -fx-background-color: #ffffff;
+}
+
+#personChat:selected {
+    -fx-background-color: #0571ED;
+}
+
+#groupChat {
+    -fx-background-color: #ffffff;
+}
+
+#groupChat:selected {
+    -fx-background-color: #0571ED;
+}
+
+#newMessageCount {
+    -fx-background-color: #1e80e9;
+    -fx-text-fill: #ffffff;
+}
+
+#homeBtn, #noteBtn, #messageBtn, #setBtn, #insightBtn, #searchBtn, #postBtn, #groupBtn {
+    -fx-background-color: #0571ED;
+    -fx-text-fill: #ffffff;
+}
+
+#homeBtn:hover,#noteBtn:hover, #messageBtn:hover, #setBtn:hover, #insightBtn:hover, #searchBtn:hover, #postBtn:hover, #groupBtn:hover {
+    -fx-background-color: #045dbc;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar >  .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: tranparent;
+}
+
+#typeArea {
+    -fx-background-color: #aaaaaa;
+    -fx-background-radius: 30;
+    -fx-translate-y: 1000%;
+}
+
+#typeField {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: rgba(5, 113, 237, 0.7);
+}

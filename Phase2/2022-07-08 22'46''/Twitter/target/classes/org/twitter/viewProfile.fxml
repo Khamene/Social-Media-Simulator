@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="profileViewPage" prefHeight="494.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.AccountViewController">
+   <children>
+      <SplitPane dividerPositions="0.25, 0.75" prefHeight="494.0" prefWidth="800.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox prefHeight="492.0" prefWidth="394.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="394.0">
+                           <children>
+                              <ImageView fx:id="profileImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label fx:id="profileUserName" prefHeight="10.0" prefWidth="150.0" text=":profileName:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="19.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="394.0" spacing="13.0">
+                           <children>
+                              <ToggleButton fx:id="blockUser" mnemonicParsing="false" onAction="#blockProgress" prefHeight="25.0" prefWidth="93.0" text="Block" />
+                              <ToggleButton fx:id="followCheck" mnemonicParsing="false" onAction="#followProcess" prefHeight="25.0" prefWidth="114.0" text="Follow/Unfollow" />
+                              <Button fx:id="directMessage" mnemonicParsing="false" onAction="#goToDirectMessage" prefHeight="25.0" prefWidth="120.0" text="DirectMessage" />
+                           </children>
+                        </HBox>
+                        <Separator prefHeight="31.0" prefWidth="486.0" />
+                        <ScrollPane fx:id="postViewScrollField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="374.0">
+                          <content>
+                            <AnchorPane fx:id="postViewField" minHeight="0.0" minWidth="0.0" prefHeight="321.0" prefWidth="404.0" />
+                          </content>
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ScrollPane>
+                        <Separator layoutX="10.0" layoutY="116.0" prefHeight="31.0" prefWidth="486.0" />
+                        <HBox fx:id="followViewHBox" prefHeight="46.0" prefWidth="402.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="viewNumberButton" mnemonicParsing="false" onAction="#showViewNumber" prefHeight="44.0" prefWidth="202.0" text="ViewNumber" />
+                              <Button fx:id="followNumberButton" mnemonicParsing="false" onAction="#showFollowNumber" prefHeight="44.0" prefWidth="202.0" text="FollowNumber" />
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="10.0" layoutY="10.0" minHeight="0.0" minWidth="0.0" prefHeight="332.0" prefWidth="321.0" />
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

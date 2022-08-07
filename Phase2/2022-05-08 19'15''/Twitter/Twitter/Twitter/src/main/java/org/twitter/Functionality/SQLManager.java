@@ -2034,4 +2034,9 @@ public class SQLManager {
             return null;
         }
     }
+    public static void changeProfilePhoto(String username, String path) throws SQLException {
+        String query = String.format("UPDATE USERS SET PROFILEPHOTO = \"%s\" WHERE USERNAME = \"%s\"", path, username);
+
+        statement.execute(query);
+    }
 }

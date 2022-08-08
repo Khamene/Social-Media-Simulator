@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane opacity="0.69" prefHeight="320.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.CreatPostController">
+   <children>
+      <TextArea fx:id="postTextArea" layoutX="25.0" layoutY="14.0" prefHeight="200.0" prefWidth="400.0" promptText="What's on your mind?">
+         <font>
+            <Font name="Arial" size="18.0" />
+         </font></TextArea>
+      <ButtonBar layoutX="27.0" layoutY="255.0" prefHeight="40.0" prefWidth="133.0">
+        <buttons>
+            <ImageView fx:id="creatPostAddImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+          <Button minWidth="64.0" mnemonicParsing="false" onAction="#addImage" prefHeight="26.0" text="Add image" />
+        </buttons>
+      </ButtonBar>
+      <Button layoutX="361.0" layoutY="262.0" mnemonicParsing="false" onAction="#CreatPost" prefHeight="26.0" prefWidth="60.0" text="Post" />
+      <Button layoutX="297.0" layoutY="262.0" mnemonicParsing="false" onAction="#cancelCreatePost" prefHeight="26.0" prefWidth="60.0" text="Cancel" />
+      <Label fx:id="statusLabel" layoutX="260.0" layoutY="222.0" prefHeight="26.0" prefWidth="160.0" textFill="RED">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+      <Label fx:id="imageLabel" layoutX="27.0" layoutY="222.0" prefHeight="26.0" prefWidth="195.0" text="No images selected.">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

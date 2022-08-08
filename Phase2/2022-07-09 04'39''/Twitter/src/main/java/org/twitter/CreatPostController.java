@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 
 public class CreatPostController implements Initializable {
     @FXML
-    private ImageView creatPostAddImage;
+    private ImageView addImageIcon;
 
     @FXML
     public Label statusLabel;
@@ -39,21 +40,24 @@ public class CreatPostController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                thisScene = creatPostAddImage.getScene();
+                thisScene = addImageIcon.getScene();
                 thisStage = (Stage) thisScene.getWindow();
                 thisStage.setResizable(false);
-
+                Image iconImage;
                 //theme handle
                 if(App.theme.getValue() ==0) {
                     thisScene.getStylesheets().clear();
                     thisScene.getStylesheets().add(this.getClass().getResource("LightModeCreatePost.css").toExternalForm());
+                    iconImage = new Image(getClass().getResourceAsStream("LightModeAddImageIcon.png"));
+
                 }
                 else {
                     thisScene.getStylesheets().clear();
                     thisScene.getStylesheets().add(this.getClass().getResource("DarkModeCreatePost.css").toExternalForm());
+                    iconImage = new Image(getClass().getResourceAsStream("DightModeAddImageIcon.png"));
                 }
 
-
+                addImageIcon.setImage(iconImage);
             }
         });
 

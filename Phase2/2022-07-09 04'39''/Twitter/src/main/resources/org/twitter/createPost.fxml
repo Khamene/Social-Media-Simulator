@@ -16,7 +16,7 @@
          </font></TextArea>
       <ButtonBar layoutX="27.0" layoutY="255.0" prefHeight="40.0" prefWidth="133.0">
         <buttons>
-            <ImageView fx:id="creatPostAddImage" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="addImageIcon" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
           <Button minWidth="64.0" mnemonicParsing="false" onAction="#addImage" prefHeight="26.0" text="Add image" />
         </buttons>
       </ButtonBar>

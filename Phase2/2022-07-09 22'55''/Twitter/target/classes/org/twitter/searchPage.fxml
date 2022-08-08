@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="searchUserName" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.SearchPageController">
+   <children>
+      <TextField fx:id="searchText" layoutX="246.0" layoutY="1.0" prefHeight="26.0" prefWidth="288.0" promptText="username" />
+      <VBox layoutX="246.0" layoutY="36.0" prefHeight="410.0" prefWidth="288.0">
+         <children>
+            <HBox fx:id="firstResult" onMouseClicked="#sendToFirstProfileProgress" onMouseEntered="#changeFirstHBoxColor" onMouseExited="#resetFirstHBoxColor" prefHeight="85.0" prefWidth="288.0" />
+            <HBox fx:id="secondResult" onMouseClicked="#sendToSecondProfileProgress" onMouseEntered="#changeSecondHBoxColor" onMouseExited="#resetSecondHBoxColor" prefHeight="85.0" prefWidth="288.0" />
+            <HBox fx:id="thirdResult" onMouseClicked="#sendToThirdProfileProgress" onMouseEntered="#changeThirdHBoxColor" onMouseExited="#resetThirdHBoxColor" prefHeight="85.0" prefWidth="288.0" />
+            <HBox fx:id="fourthResult" onMouseClicked="#sendToFourthProfileProgress" onMouseEntered="#changeFourthHBoxColor" onMouseExited="#resetFourthHBoxColor" prefHeight="85.0" prefWidth="288.0" />
+            <HBox fx:id="fifthResult" onMouseClicked="#sendToFifthProfileProgress" onMouseEntered="#changeFifthHBoxColor" onMouseExited="#resetFifthHBoxColor" prefHeight="85.0" prefWidth="288.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

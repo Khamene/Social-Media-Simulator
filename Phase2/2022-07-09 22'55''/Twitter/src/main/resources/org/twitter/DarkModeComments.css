@@ -1,0 +1,42 @@
+.root {
+    -fx-background-color: #111111;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: tranparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar >  .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+#accessArea {
+    -fx-background-color: #111111   ;
+}
+
+#typeField {
+    -fx-background-color: #cccccc;
+    -fx-prompt-text-fill: #1e80e9;
+}

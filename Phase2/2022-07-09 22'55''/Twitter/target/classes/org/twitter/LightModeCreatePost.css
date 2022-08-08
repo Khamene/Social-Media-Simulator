@@ -1,0 +1,29 @@
+.root {
+    -fx-background-color: #ffffff;
+}
+
+.label {
+    -fx-text-fill: #000000;
+}
+
+#textNeed {
+    -fx-text-fill: #ff0000;
+}
+
+#createPost {
+    -fx-background-color: #42B72A;
+    -fx-text-fill: #ffffff;
+}
+
+#createPost:hover {
+    -fx-background-color: #349c1f;
+}
+
+#clearAll {
+    -fx-background-color: #0571ED;
+    -fx-text-fill: #ffffff;
+}
+
+#clearAll:hover {
+    -fx-background-color: #045dbc;
+}

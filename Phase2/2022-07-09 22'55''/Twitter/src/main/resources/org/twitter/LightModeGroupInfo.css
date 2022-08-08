@@ -1,0 +1,39 @@
+#mainAnchor, #titleHBox, #groupNameHBox, #infoHBox, #membersVBox, #chatNameScroll {
+    -fx-background-color: #ffffff;
+}
+
+.label {
+    -fx-text-fill: #000000;
+}
+
+#separator {
+    -fx-background-color: #bbbbbb;
+}
+
+.scroll-pane {
+    -fx-background-color: white;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #0571ED;
+    -fx-background-radius: 5em;
+}
+
+#owner, #admin, #changeAdmin, #ban, #kick {
+    -fx-text-fill: #0571ED;
+}

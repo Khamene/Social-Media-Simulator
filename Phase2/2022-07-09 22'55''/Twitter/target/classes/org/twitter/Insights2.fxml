@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.Insights2Controller">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="450.0">
+         <children>
+            <HBox prefHeight="47.0" prefWidth="450.0">
+               <padding>
+                  <Insets left="13.0" top="13.0" />
+               </padding>
+               <children>
+                  <Label style="-fx-text-fill: #0571ED;" text="Insights">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Separator prefHeight="10.0" prefWidth="450.0" />
+            <ScrollPane hbarPolicy="NEVER" prefHeight="285.0" prefWidth="450.0" vbarPolicy="ALWAYS">
+               <content>
+                  <AnchorPane fx:id="accessArea1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="451.0" />
+               </content>
+            </ScrollPane>
+            <Separator layoutX="10.0" layoutY="57.0" prefHeight="17.0" prefWidth="450.0" style="-fx-border-color: #1e80e9; -fx-background-color: #1e80e9;" />
+            <ScrollPane hbarPolicy="NEVER" layoutX="10.0" layoutY="67.0" prefHeight="285.0" prefWidth="450.0" vbarPolicy="ALWAYS">
+               <content>
+                  <AnchorPane fx:id="accessArea2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0" prefWidth="451.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

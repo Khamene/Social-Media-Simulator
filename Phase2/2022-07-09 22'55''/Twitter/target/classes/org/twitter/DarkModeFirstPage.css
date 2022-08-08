@@ -1,0 +1,54 @@
+
+#firstStage {
+    -fx-background-color: #111111;
+}
+
+#loginBtn {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #0571ED;
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+}
+
+#loginBtn:hover {
+    -fx-background-color: #1e80e9;
+}
+
+#signUpBtn {
+    -fx-background-color: #42B72A;
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+    -fx-text-fill: white;
+}
+
+#signUpBtn:hover {
+    -fx-background-color: #4cc433;
+}
+
+#usernameInvalid {
+    -fx-background-color: #111111;
+}
+
+#passwordInvalid {
+    -fx-background-color: #111111;
+}
+
+#firstPageVbox {
+    -fx-background-color: #111111;
+}
+
+#darkMode {
+    -fx-background-color: #0571ED;
+}
+
+#lightMode {
+    -fx-background-color:  #111111;
+}
+
+#line {
+    -fx-stroke: #ffffff
+}
+
+#noAccount {
+    -fx-text-fill: #ffffff;
+}

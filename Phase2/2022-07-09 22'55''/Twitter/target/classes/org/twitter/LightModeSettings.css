@@ -1,0 +1,17 @@
+.root {
+    -fx-background-color: #ffffff;
+}
+
+#wrongPassword, #statusLblUser, #statusLblPass, #statusLblPic {
+    -fx-text-fill: #ff0000;
+}
+
+.button {
+    -fx-background-color: #d9190b;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+}
+
+.button:hover {
+    -fx-background-color: #bd1609;
+}

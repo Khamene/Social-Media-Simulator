@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.SettingController">
+   <children>
+      <VBox prefHeight="286.0" prefWidth="407.0">
+         <children>
+            <HBox fx:id="passHBox" alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="453.0">
+               <children>
+                  <Label prefHeight="26.0" prefWidth="153.0" text="ENTER PASSWORD">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="securityPassword" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <Label fx:id="wrongPassword" prefHeight="18.0" prefWidth="399.0" textFill="#fa4343" />
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="407.0">
+               <children>
+                  <Label fx:id="userNameLbl" prefHeight="18.0" prefWidth="85.0" text="Username" />
+                  <TextField fx:id="newUserName" prefWidth="200.0" promptText="username">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Circle fx:id="userNameCir" fill="WHITE" onMouseClicked="#changeUserName" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLblUser" prefHeight="18.0" prefWidth="405.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="407.0">
+               <children>
+                  <Label fx:id="passLbl" prefHeight="18.0" prefWidth="85.0" text="Password" />
+                  <PasswordField fx:id="newPassword" prefWidth="200.0">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </PasswordField>
+                  <Circle fx:id="passCir" fill="WHITE" onMouseClicked="#changePassword" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLblPass" prefHeight="18.0" prefWidth="402.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="407.0">
+               <children>
+                  <Label fx:id="picLbl" prefHeight="18.0" prefWidth="85.0" text="Profile Picture" />
+                  <TextField fx:id="newPicture" editable="false" prefWidth="200.0" promptText="picture path">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Circle fx:id="picCir" fill="WHITE" onMouseClicked="#changeProfilePicture" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLblPic" layoutX="10.0" layoutY="135.0" prefHeight="18.0" prefWidth="402.0" />
+            <HBox prefHeight="50.0" prefWidth="393.0">
+               <children>
+                  <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" prefHeight="46.0" prefWidth="103.0" text="Logout">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="7.0" right="7.0" top="13.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>

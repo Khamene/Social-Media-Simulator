@@ -14,12 +14,12 @@ public abstract class Post {
 
     static int idCounter = 0;
 
-/*  public static void publishPost(String userID, String content, String filepath) throws PostContentNullException, NoSuchFileException {
+ public static void publishPost(String userID, String content, String filepath) throws PostContentNullException, NoSuchFileException {
         if (content.equals(""))
             throw new PostContentNullException("Can not post null content");
 
         String postID = assignID();
-    }*/
+    }
 
     public static void checkPostID(String postID) throws PostDoesNotExistException {
         try {

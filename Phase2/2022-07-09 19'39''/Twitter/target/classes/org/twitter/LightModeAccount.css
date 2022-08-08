@@ -1,0 +1,97 @@
+#appTitle {
+    -fx-text-fill: #0571ED;
+}
+
+.label {
+    -fx-text-fill: #000000;
+}
+
+#vertSplit {
+    -fx-background-color: transparent;
+}
+
+#mainSide {
+    -fx-background-color: transparent;
+}
+
+#horizSplit {
+    -fx-background-color: transparent;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-padding: 0;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-padding: 1;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: tranparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar >  .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+#postViewScrollField {
+    -fx-background-color: transparent;
+}
+
+#feedVBox {
+    -fx-background-color: transparent;
+}
+
+#postViewField {
+    -fx-background-color: #ffffff;
+}
+
+#darkMode {
+    -fx-background-color: #ffffff;
+}
+
+#lightMode {
+    -fx-background-color:  #0571ED;
+}
+
+#homeBtn, #noteBtn, #messageBtn, #setBtn, #insightBtn, #searchBtn, #postBtn, #groupBtn {
+    -fx-background-color: #0571ED;
+    -fx-text-fill: #ffffff;
+}
+
+#homeBtn:hover,#noteBtn:hover, #messageBtn:hover, #setBtn:hover, #insightBtn:hover, #searchBtn:hover, #postBtn:hover, #groupBtn:hover {
+    -fx-background-color: #1e80e9;
+}
+
+#blockBtn, #followBtn, #directBtn {
+    -fx-background-color: #0571ED;
+    -fx-background-radius: 20;
+}
+
+#blockBtn:selected, #followBtn:selected {
+    -fx-background-color: #cccccc;
+    -fx-text-fill: #1a20ff;
+    -fx-font-weight: BOLD;
+}
+
+#directBtn:hover {
+    -fx-background-color: #1e80e9;
+}

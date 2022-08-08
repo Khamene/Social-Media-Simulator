@@ -22,7 +22,7 @@ public class App extends Application {
         User.setLoggedInUsername("amin2022");
 
         theme.set(0);
-        scene = new Scene(loadFXML("setting"));
+        scene = new Scene(loadFXML("createNewPost"));
         stage.setScene(scene);
         stage.setMinHeight(450);
         stage.setMinWidth(650);

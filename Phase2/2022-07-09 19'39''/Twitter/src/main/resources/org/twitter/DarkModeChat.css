@@ -1,0 +1,117 @@
+.root {
+    -fx-background-color: #111111;
+}
+
+#mainSide, #leftSide, #rightSide, #chatNameAnchor, #chatNameScroll {
+    -fx-background-color: #111111;
+    -fx-border-color: #111111;
+}
+
+#chatNameScroll {
+    -fx-fill: #111111;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar >  .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: tranparent;
+}
+
+.split-pane-divider {
+    -fx-background-color: rgba(5, 113, 237, 0.4);
+    -fx-padding: 0 0.75 0 0.75;
+}
+
+#darkMode {
+    -fx-background-color: #0571ED;
+}
+
+#lightMode {
+    -fx-background-color:  #111111;
+}
+
+#allChats {
+    -fx-background-color: #111111;
+}
+
+#allChats:selected {
+    -fx-background-color: #0571ED;
+}
+
+#personChat {
+    -fx-background-color: #111111;
+}
+
+#personChat:selected {
+    -fx-background-color: #0571ED;
+}
+
+#groupChat {
+    -fx-background-color: #111111;
+}
+
+#groupChat:selected {
+    -fx-background-color: #0571ED;
+}
+
+#chatName {
+    -fx-text-fill: #ffffff;
+}
+
+#newMessageCount {
+    -fx-background-color: #1e80e9;
+    -fx-text-fill: #ffffff;
+}
+
+#homeBtn, #noteBtn, #messageBtn, #setBtn, #insightBtn, #searchBtn, #postBtn, #groupBtn {
+    -fx-background-color: #0571ED;
+    -fx-text-fill: #ffffff;
+}
+
+#homeBtn:hover,#noteBtn:hover, #messageBtn:hover, #setBtn:hover, #insightBtn:hover, #searchBtn:hover, #postBtn:hover, #groupBtn:hover {
+    -fx-background-color: #4994eb;
+}
+
+#typeArea {
+    -fx-background-color: #bbbbbb;
+    -fx-background-radius: 30;
+    -fx-translate-y: 1000%;
+}
+
+#messageArea {
+    -fx-background-color: #111111;
+}
+
+#messageScroll {
+    -fx-background-color: #111111;
+}
+
+#typeField {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: rgba(5, 113, 237, 0.7);
+}
+
+#messageText {
+    -fx-text-fill: #ffffff;
+}

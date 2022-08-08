@@ -1,0 +1,44 @@
+.root {
+    -fx-background-color: #ffffff;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar >  .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: tranparent;
+}
+
+#accessArea {
+    -fx-background-color: #ffffff;
+}
+
+#acceptBtn {
+    -fx-background-color:  #0571ED;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 20;
+}
+
+#acceptBtn:hover {
+    -fx-background-color: #045dbc;
+}

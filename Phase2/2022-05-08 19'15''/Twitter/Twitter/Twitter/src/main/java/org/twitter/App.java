@@ -20,7 +20,7 @@ public class App extends Application {
         SQLManager.initialize();
 
         theme.set(0);
-        scene = new Scene(loadFXML("firstPage"));
+        scene = new Scene(loadFXML("setting"));
         stage.setScene(scene);
         stage.setMinHeight(450);
         stage.setMinWidth(650);

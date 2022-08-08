@@ -45,7 +45,17 @@ public abstract class User {
         else
             throw new NoUserLoggedInException("No user logged in yet...");
     }
+    public static void changeProfile(String photoPath) throws NoUserLoggedInException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
 
+        try {
+            SQLManager.changeProfilePhoto(LoggedInUsername, photoPath);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public static String getUserID(String username) throws UserDoesNotExistException{
         String userID = SQLManager.getUserID(username);
 

@@ -1,41 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.SettingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.SettingController">
    <children>
-      <TextField fx:id="securityPassword" layoutX="400.0" layoutY="29.0" onAction="#checkPassword" promptText="password" />
-      <Label layoutX="209.0" layoutY="28.0" prefHeight="26.0" prefWidth="176.0" text="password for accessibility">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
-      <Label fx:id="wrongPassword" layoutX="400.0" layoutY="62.0" prefHeight="18.0" prefWidth="150.0" textFill="#fa4343" />
-      <Label fx:id="reportLbl" layoutX="357.0" layoutY="97.0" prefHeight="18.0" prefWidth="77.0" textFill="#fa4343">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label fx:id="statusLblUser" layoutX="550.0" layoutY="167.0" prefHeight="18.0" prefWidth="127.0" />
-      <TextField fx:id="newUserName" layoutX="266.0" layoutY="163.0" promptText="username" />
-      <Label fx:id="userNameLbl" layoutX="165.0" layoutY="167.0" prefHeight="18.0" prefWidth="86.0" text="new UserName" />
-      <Circle fx:id="userNameCir" fill="WHITE" layoutX="144.0" layoutY="176.0" onMouseClicked="#changeUserName" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Label fx:id="passLbl" layoutX="166.0" layoutY="239.0" prefHeight="18.0" prefWidth="86.0" text="new password" />
-      <Circle fx:id="passCir" fill="WHITE" layoutX="144.0" layoutY="248.0" onMouseClicked="#changePassword" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <TextField fx:id="newPassword" layoutX="266.0" layoutY="235.0" promptText="password" />
-      <Circle fx:id="picCir" fill="WHITE" layoutX="144.0" layoutY="322.0" onMouseClicked="#changeProfilePicture" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-      <Label fx:id="picLbl" layoutX="165.0" layoutY="313.0" prefHeight="18.0" prefWidth="101.0" text="new profile picture" />
-      <TextField fx:id="newPicture" layoutX="266.0" layoutY="309.0" promptText="picture path" />
-      <Label fx:id="statusLblPass" layoutX="550.0" layoutY="239.0" prefHeight="18.0" prefWidth="127.0" />
-      <Label fx:id="statusLblPic" layoutX="561.0" layoutY="313.0" prefHeight="18.0" prefWidth="127.0" />
-      <Label layoutX="425.0" layoutY="290.0" onMouseClicked="#addFile" prefHeight="0.0" prefWidth="20.0" text="...">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
+      <VBox prefHeight="286.0" prefWidth="407.0">
+         <children>
+            <HBox fx:id="passHBox" alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="453.0">
+               <children>
+                  <Label prefHeight="26.0" prefWidth="153.0" text="ENTER PASSWORD">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="securityPassword" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <Label fx:id="wrongPassword" prefHeight="18.0" prefWidth="399.0" textFill="#fa4343" />
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="407.0">
+               <children>
+                  <Label fx:id="userNameLbl" prefHeight="18.0" prefWidth="85.0" text="Username" />
+                  <TextField fx:id="newUserName" prefWidth="200.0" promptText="username">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Circle fx:id="userNameCir" fill="WHITE" onMouseClicked="#changeUserName" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLblUser" prefHeight="18.0" prefWidth="405.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="407.0">
+               <children>
+                  <Label fx:id="passLbl" prefHeight="18.0" prefWidth="85.0" text="Password" />
+                  <PasswordField fx:id="newPassword" prefWidth="200.0">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </PasswordField>
+                  <Circle fx:id="passCir" fill="WHITE" onMouseClicked="#changePassword" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLblPass" prefHeight="18.0" prefWidth="402.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="407.0">
+               <children>
+                  <Label fx:id="picLbl" prefHeight="18.0" prefWidth="85.0" text="Profile Picture" />
+                  <TextField fx:id="newPicture" editable="false" prefWidth="200.0" promptText="picture path">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Circle fx:id="picCir" fill="WHITE" onMouseClicked="#changeProfilePicture" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </HBox>
+            <Label fx:id="statusLblPic" layoutX="10.0" layoutY="135.0" prefHeight="18.0" prefWidth="402.0" />
+            <HBox prefHeight="50.0" prefWidth="393.0">
+               <children>
+                  <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" prefHeight="46.0" prefWidth="103.0" text="Logout">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="7.0" right="7.0" top="13.0" />
+         </padding>
+      </VBox>
    </children>
 </AnchorPane>

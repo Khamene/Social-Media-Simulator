@@ -25,7 +25,12 @@ public class User {
     public String getPhotoPath() {
         return photoPath;
     }
+    public static boolean checkPassword(String password) throws NoUserLoggedInException, SQLException {
+        if (LoggedInUsername == null)
+            throw new NoUserLoggedInException("No user logged in yet...");
 
+        return SQLManager.checkPassword(LoggedInUsername, password);
+    }
     public String getUsername() {
         return username;
     }

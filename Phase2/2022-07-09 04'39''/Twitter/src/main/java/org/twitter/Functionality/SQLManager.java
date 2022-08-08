@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class SQLManager {
     static String url = "jdbc:mysql://localhost:3306/twitter";
     static String username = "root";
-    static String password = "MehrshadTaji2571381";
+    static String password = "rahimi1382";
 
     static Connection con = null;
     static Statement statement = null;
@@ -2372,5 +2372,17 @@ public class SQLManager {
             System.out.println("Failed to close connection with SQL Database. Terminating the program anyway...");
             System.exit(-1);
         }
+    }
+    public static boolean checkPassword(String username, String password) throws SQLException {
+        String query = String.format("SELECT PASSWORD FROM USERS WHERE USERNAME = \"%s\"", username);
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        resultSet.next();
+
+        if (resultSet.getString(1).equals(password))
+            return true;
+        else
+            return false;
     }
 }

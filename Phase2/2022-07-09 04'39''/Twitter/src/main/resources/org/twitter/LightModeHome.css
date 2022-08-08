@@ -1,0 +1,29 @@
+.button {
+    -fx-background-color: #ffffff;
+    -fx-font-family: Arial;
+    -fx-font-size: 12;
+    -fx-text-fill: #000000;
+}
+.button:hover {
+    -fx-background-color: #8f8f8f;
+}
+.label {
+    -fx-font-size: 14;
+    -fx-font-family: Arial;
+    -fx-font-weight: 700;
+}
+#newPostButton {
+    -fx-background-color: #0571ED;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+}
+#newPostButton:hover {
+    -fx-background-color: #1078f0;
+}
+.button:selected {
+    fx-background-color: #0571ED;
+    -fx-fill: white;
+}
+#menuBox {
+    -fx-background-color: #ffffff;
+}

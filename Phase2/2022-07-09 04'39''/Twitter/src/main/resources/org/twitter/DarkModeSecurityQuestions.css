@@ -1,0 +1,45 @@
+.root {
+    -fx-background-color: #111111;
+}
+
+.choice-box {
+    -fx-background-color: #0571ED;
+    -fx-fill: white;
+    -fx-background-radius: 20;
+}
+.choice-box:hover {
+    -fx-background-color: #045dbc;
+}
+#title {
+    -fx-text-fill: #0571ED;
+    -fx-font-family: Arial;
+    -fx-font-size: 20;
+    -fx-font-weight: 700;
+}
+#description {
+    -fx-font-family: Arial;
+    -fx-font-size: 12;
+    -fx-text-fill: white;
+}
+.button {
+    -fx-background-color: #0571ED;
+    -fx-background-radius: 20;
+    -fx-fill: white;
+    -fx-font-family: Arial;
+    -fx-font-size: 16;
+}
+.button:hover {
+    -fx-background-color: #1e80e9;
+}
+
+#darkMode {
+    -fx-background-color: #0571ED;
+}
+
+#lightMode {
+    -fx-background-color:  #111111;
+}
+
+#failure {
+    -fx-text-fill: #ff0000;
+}

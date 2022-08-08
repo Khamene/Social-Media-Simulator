@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.twitter.ChatController">
+   <children>
+      <SplitPane fx:id="splitPane" dividerPositions="0.1, 0.75" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0">
+        <items>
+          <AnchorPane fx:id="leftSide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <VBox fx:id="menuVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="270.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="appTitle" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="185.0" text="FXgram" textFill="#0571ed">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox fx:id="menuHbox1" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <ImageView fx:id="homePhoto" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@lightModeHomeIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="homeBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoHome" prefHeight="40.0" prefWidth="140.0" text="Home" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="menuHbox2" alignment="CENTER_LEFT" layoutX="10.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <ImageView fx:id="notePhoto" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@lightModeNotificationsIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="noteBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goToNotifications" prefHeight="40.0" prefWidth="140.0" text="Notifications" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="menuHbox3" alignment="CENTER_LEFT" layoutX="10.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <ImageView fx:id="messagePhoto" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@lightModeChatIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="messageBtn" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" text="Messages" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="menuHbox4" alignment="CENTER_LEFT" layoutX="10.0" layoutY="112.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <ImageView fx:id="setPhoto" fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@lightModeSettingsIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="setBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoSettings" prefHeight="40.0" prefWidth="140.0" text="Settings" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="menuHbox5" alignment="CENTER_LEFT" layoutX="10.0" layoutY="192.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <ImageView fx:id="insightPhoto" fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@lightModeInsightsIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="insightBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoInsigts" prefHeight="40.0" prefWidth="140.0" text="Insights" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="menuHbox6" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <ImageView fx:id="searchPhoto" fitHeight="40.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@lightModeSearchIcons.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Button fx:id="searchBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#gotoSearchUser" prefHeight="40.0" prefWidth="140.0" text="Search User" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="menuHbox7" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <Button fx:id="postBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createNewPost" prefHeight="40.0" prefWidth="134.0" text="New Post">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="filterHBox" alignment="CENTER" prefHeight="40.0" prefWidth="183.0">
+                           <children>
+                              <ToggleButton fx:id="allChats" mnemonicParsing="false" prefHeight="38.0" prefWidth="61.0" selected="true" text="All">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="filter" />
+                                 </toggleGroup>
+                              </ToggleButton>
+                              <ToggleButton fx:id="personChat" mnemonicParsing="false" prefHeight="38.0" prefWidth="61.0" text="Person" toggleGroup="$filter" />
+                              <ToggleButton fx:id="groupChat" layoutX="70.0" layoutY="10.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="61.0" text="Group" toggleGroup="$filter" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="themeHBox" alignment="CENTER" prefHeight="40.0" prefWidth="120.0">
+                           <children>
+                              <ToggleButton fx:id="lightMode" mnemonicParsing="false" prefHeight="38.0" prefWidth="61.0" selected="true" text="Light">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="themeChoose" />
+                                 </toggleGroup>
+                              </ToggleButton>
+                              <ToggleButton fx:id="darkMode" mnemonicParsing="false" prefHeight="38.0" prefWidth="61.0" text="Dark" toggleGroup="$themeChoose" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="menuHbox8" alignment="CENTER" layoutX="10.0" layoutY="312.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="185.0">
+                           <children>
+                              <Button fx:id="groupBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createNewGroup" prefHeight="40.0" prefWidth="134.0" text="Create Group" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+          <AnchorPane fx:id="mainSide" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="400.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <VBox fx:id="chatsVBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="393.0">
+                     <children>
+                        <HBox fx:id="chatNameHBox" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="24.0" prefWidth="390.0">
+                           <children>
+                              <Label fx:id="chatName" text="ChatName">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="16.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets></HBox>
+                        <ScrollPane fx:id="messageScroll" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="462.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                          <content>
+                            <AnchorPane fx:id="messageArea" minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="483.0">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </AnchorPane>
+                          </content>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </ScrollPane>
+                        <HBox fx:id="typeArea" alignment="CENTER" prefHeight="40.0" prefWidth="383.0">
+                           <children>
+                              <TextField fx:id="typeField" prefHeight="40.0" prefWidth="359.0" promptText="Type your message..." />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="rightSide" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <ScrollPane fx:id="chatNameScroll" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="200.0" vbarPolicy="ALWAYS">
+                    <content>
+                      <AnchorPane fx:id="chatNameAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="200.0">
+
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

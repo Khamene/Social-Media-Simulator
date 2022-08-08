@@ -1,0 +1,24 @@
+.root {
+    -fx-background-color: #ffffff;
+}
+
+#darkMode {
+    -fx-background-color: #ffffff;
+}
+
+#lightMode {
+    -fx-background-color: #0571ED;
+}
+
+#nextBtn {
+    -fx-background-color: #0571ED;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family: Arial;
+    -fx-font-weight: 700;
+    -fx-background-radius: 20;
+}
+
+#nextBtn:hover {
+    -fx-background-color: #045dbc;
+}

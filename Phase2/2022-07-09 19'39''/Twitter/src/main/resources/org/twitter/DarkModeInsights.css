@@ -1,0 +1,38 @@
+.root {
+    -fx-background-color: #111111;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar >  .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: tranparent;
+}
+
+#accessArea1, #accessArea2 {
+    -fx-background-color: #111111;
+}
+
+#likeNum, #likeDate {
+    -fx-text-fill: #ffffff;
+}
